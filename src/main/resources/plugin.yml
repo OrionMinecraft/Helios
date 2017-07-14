@@ -1,0 +1,7 @@
+name: Helios
+version: @version@
+main: eu.mikroskeem.helios.plugin.HeliosPlugin
+description: @description@
+website: @website@
+authors:
+- mikroskeem

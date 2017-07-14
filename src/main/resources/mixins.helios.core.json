@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.6.15",
+  "package": "eu.mikroskeem.helios.mod.mixins.core",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "server": [
+    "MixinCommand",
+    "MixinCraftServer",
+    "MixinCrashReport",
+    "MixinDedicatedServer",
+    "MixinJavaPluginLoader",
+    "MixinMain",
+    "MixinMinecraftServer",
+    "MixinSimpleCommandMap",
+    "MixinSimplePluginManager",
+    "MixinVersionCommand"
+  ]
+}

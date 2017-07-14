@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.6.15",
+  "package": "eu.mikroskeem.helios.mod.mixins.world",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "server": [
+    "MixinCraftWorld",
+    "MixinDedicatedServer",
+    "MixinEntityPlayer",
+    "MixinPlayerList",
+    "MixinWorld",
+    "MixinWorldData",
+    "MixinWorldDataAccessors",
+    "MixinWorldNBTStorage"
+  ]
+}

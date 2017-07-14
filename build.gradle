@@ -1,0 +1,73 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
+    }
+    dependencies {
+        classpath group: 'org.jetbrains.kotlin', name: 'kotlin-gradle-plugin', version: kotlin_version
+        classpath group: 'gradle.plugin.net.minecrell', name: 'licenser', version: minecrell_licenser_version
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'net.minecrell.licenser'
+
+group = pluginGroup
+version = pluginVersion
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        name = 'destroystokyo-repo'
+        url = 'https://repo.destroystokyo.com/repository/maven-public/'
+    }
+
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+
+    maven {
+        name = 'mikroskeem-repo'
+        url = 'https://repo.wut.ee/repository/mikroskeem-repo'
+    }
+}
+
+// Plugin/mod dependencies
+dependencies {
+    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version: kotlin_version
+    compileOnly group: 'com.destroystokyo.paper', name: 'paper-api', version: '1.12-R0.1-SNAPSHOT'
+    compileOnly group: 'com.destroystokyo.paper', name: 'paper', version: '1.12-R0.1-SNAPSHOT'
+    compileOnly group: 'eu.mikroskeem', name: 'orion.api', version: '0.0.1'
+}
+
+
+// Plugin resource processing
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter org.apache.tools.ant.filters.ReplaceTokens, tokens: [
+                version: pluginVersion,
+                description: description,
+                website: website
+        ]
+    }
+}
+
+// Licenser task
+license {
+    header = rootProject.file('etc/HEADER')
+    ignoreFailures = false
+    include "**/*.java"
+}
+
+// Wrapper task
+task wrapper(type: Wrapper) {
+    gradleVersion = gradle_version
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradle_version-all.zip"
+}

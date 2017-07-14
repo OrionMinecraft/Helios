@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.6.15",
+  "package": "eu.mikroskeem.helios.mod.mixins.player",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "server": [
+    "MixinCraftPlayer",
+    "MixinPlayerConnection"
+  ]
+}
