@@ -21,4 +21,8 @@ class HeliosConfiguration {
     @Setting(value = "command", comment = "Command system configuration")
     var commandConfiguration = CommandConfiguration()
         private set
+
+    @Setting(value = "server", comment = "Server configuration")
+    var serverConfiguration = ServerConfiguration()
+        private set
 }

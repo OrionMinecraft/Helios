@@ -9,6 +9,7 @@
     "MixinCraftServer",
     "MixinCrashReport",
     "MixinDedicatedServer",
+    "MixinEULA",
     "MixinJavaPluginLoader",
     "MixinMain",
     "MixinMinecraftServer",

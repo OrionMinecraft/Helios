@@ -14,6 +14,7 @@ class PlayerConfiguration {
             comment = "Time how long should player be idle to mark one away")
     var millisecondsUntilToMarkPlayerAway: Long = 120 * 1000
         private set
+
     @Setting(value = "player-data-saving-disabled",
             comment = "Disables player data saving to disk. Useful for Lobby servers")
     var playerDataSavingDisabled = false
