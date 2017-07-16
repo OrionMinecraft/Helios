@@ -64,6 +64,7 @@ license {
     header = rootProject.file('etc/HEADER')
     ignoreFailures = false
     include "**/*.java"
+    include "**/*.kt"
 }
 
 // Wrapper task
