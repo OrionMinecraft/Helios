@@ -26,8 +26,8 @@
 package eu.mikroskeem.helios.mod.mixins.core;
 
 import eu.mikroskeem.helios.api.events.server.ServerStoppingEvent;
+import eu.mikroskeem.helios.mod.helpers.CallEventSafe;
 import net.minecraft.server.v1_12_R1.MinecraftServer;
-import org.bukkit.Bukkit;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -48,7 +48,7 @@ public abstract class MixinMinecraftServer {
             ordinal = 0, shift = At.Shift.AFTER
     ))
     private void callServerStopping(CallbackInfo ci) {
-        Bukkit.getPluginManager().callEvent(new ServerStoppingEvent());
+        CallEventSafe.callEvent(new ServerStoppingEvent());
     }
 
     /* Replace server mod name */

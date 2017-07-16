@@ -26,8 +26,8 @@
 package eu.mikroskeem.helios.mod.mixins.core;
 
 import eu.mikroskeem.helios.api.events.server.ServerStartedEvent;
+import eu.mikroskeem.helios.mod.helpers.CallEventSafe;
 import net.minecraft.server.v1_12_R1.DedicatedServer;
-import org.bukkit.Bukkit;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -43,6 +43,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinDedicatedServer {
     @Inject(method = "init", at = @At("TAIL"))
     public void onDone(CallbackInfoReturnable<Boolean> cb) {
-        Bukkit.getPluginManager().callEvent(new ServerStartedEvent());
+        CallEventSafe.callEvent(new ServerStartedEvent());
     }
 }
