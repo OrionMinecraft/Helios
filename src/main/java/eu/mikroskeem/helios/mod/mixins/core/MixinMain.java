@@ -51,8 +51,10 @@ public abstract class MixinMain {
     private static void onPrintln(PrintStream printStream, String text) {
         if(printStream.equals(System.err)) {
             logger.error(text);
-        } else {
+        } else if(printStream.equals(System.out)) {
             logger.info(text);
+        } else {
+            printStream.println(text);
         }
     }
 }
