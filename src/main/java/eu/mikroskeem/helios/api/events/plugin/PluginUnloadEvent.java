@@ -23,51 +23,42 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.api.plugin;
+package eu.mikroskeem.helios.api.events.plugin;
 
-import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
- * Plugin manager with extra functionality
+ * This event gets fired when plugin is going to be unloaded
  *
+ * @see eu.mikroskeem.helios.api.plugin.HeliosPluginManager#unloadPlugin(Plugin)
  * @author Mark Vainomaa
  */
-public interface HeliosPluginManager extends PluginManager {
-    /**
-     * Gets map of {@link Plugin} lookup names and instances
-     *
-     * @return Map of plugin lookup names and instances
-     */
-    @NotNull
-    Map<String, Plugin> getLookupNames();
+public final class PluginUnloadEvent extends Event {
+    private static final HandlerList handlers = new HandlerList();
+
+    private final Plugin plugin;
+
+    public PluginUnloadEvent(Plugin plugin) {
+        super();
+        this.plugin = plugin;
+    }
 
     /**
-     * Gets list of loaded {@link Plugin}s
+     * Gets {@link Plugin} instance
      *
-     * @return List of loaded plugins
+     * @return Plugin instance
      */
     @NotNull
-    List<Plugin> getPluginsList();
+    @Contract(pure = true)
+    public Plugin getPlugin() {
+        return plugin;
+    }
 
-    /**
-     * Gets instance of {@link SimpleCommandMap} associated with this plugin manager
-     *
-     * @return Instance of {@link SimpleCommandMap}
-     */
-    @NotNull
-    SimpleCommandMap getCommandMap();
-
-    /**
-     * Unloads {@link Plugin}
-     *
-     * @param plugin Plugin to unload
-     */
-    void unloadPlugin(@NotNull Plugin plugin);
+    public HandlerList getHandlers() { return handlers; }
+    public static HandlerList getHandlerList() { return handlers; }
 }
