@@ -50,4 +50,10 @@ class PlayerConfiguration {
                     "Note that client times out if server doesn't send keep-alives for 20 seconds.")
     var keepalivePacketThreshold = 40L
         private set
+
+    @Setting(value = "dont-kick-opped-players-on-idle-timeout",
+            comment = "Should opped players get kicked when they are idle for too long? (specified in server.properties" +
+                    " using `player-idle-timeout` option)")
+    var dontKickOppedPlayersOnIdle = false
+        private set
 }

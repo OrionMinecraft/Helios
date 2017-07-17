@@ -41,7 +41,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
 /**
- * Handles player idle/active events and
+ * Handles player idle/active events, keep-alive packet sending/receiving and idle timeout kicking
  *
  * @author Mark Vainomaa
  */
@@ -50,6 +50,7 @@ public abstract class MixinPlayerConnection {
     private final static String NETWORK_TICK_COUNT = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;e:I";
     private final static String LAST_SENT_PING_PACKET = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;h:J";
     private final static String PROCESS_KEEP_ALIVE = "a(Lnet/minecraft/server/v1_12_R1/PacketPlayInKeepAlive;)V";
+    private final static String RESET_IDLE_TIMER = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;resetIdleTimer()V";
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
     @Shadow public abstract CraftPlayer getPlayer();
@@ -61,6 +62,21 @@ public abstract class MixinPlayerConnection {
     @Shadow private long g;
 
     private int helios$awayTicks = 0;
+
+    @Inject(method = "e", cancellable = true, at = @At(value = "INVOKE", target = RESET_IDLE_TIMER))
+    public void onIdleKickBlock(CallbackInfo ci) {
+        boolean dontKick = HeliosMod.INSTANCE.getConfigurationWrapper()
+                .getConfiguration()
+                .getPlayerConfiguration()
+                .getDontKickOppedPlayersOnIdle();
+
+        if(this.player.getBukkitEntity().isOp() && dontKick) {
+            ci.cancel();
+
+            /* TODO: Better solution */
+            onUpdate(ci);
+        }
+    }
 
     @Inject(method = "e", at = @At("TAIL"))
     public void onUpdate(CallbackInfo cb) {
