@@ -44,4 +44,10 @@ class PlayerConfiguration {
             comment = "Disables player data saving to disk. Useful for Lobby servers")
     var playerDataSavingDisabled = false
         private set
+
+    @Setting(value = "keepalive-packet-send-threshold",
+            comment = "How many ticks should server wait before sending new keep-alive packet to client? " +
+                    "Note that client times out if server doesn't send keep-alives for 20 seconds.")
+    var keepalivePacketThreshold = 40L
+        private set
 }

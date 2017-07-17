@@ -28,13 +28,15 @@ package eu.mikroskeem.helios.mod.mixins.player;
 import eu.mikroskeem.helios.api.entity.Player;
 import eu.mikroskeem.helios.api.events.player.idle.PlayerActiveEvent;
 import eu.mikroskeem.helios.api.events.player.idle.PlayerIdleEvent;
-import net.minecraft.server.v1_12_R1.MinecraftServer;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
+import eu.mikroskeem.helios.mod.HeliosMod;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
@@ -45,7 +47,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = PlayerConnection.class, remap = false)
 public abstract class MixinPlayerConnection {
+    private final static String NETWORK_TICK_COUNT = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;e:I";
+    private final static String LAST_SENT_PING_PACKET = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;h:J";
+    private final static String PROCESS_KEEP_ALIVE = "a(Lnet/minecraft/server/v1_12_R1/PacketPlayInKeepAlive;)V";
+
+    @Shadow public abstract void sendPacket(Packet<?> packet);
     @Shadow public abstract CraftPlayer getPlayer();
+    @Shadow protected abstract long d();
+    @Shadow public EntityPlayer player;
+    @Shadow private int f;
+    @Shadow private int e;
+    @Shadow private long h;
+    @Shadow private long g;
 
     private int helios$awayTicks = 0;
 
@@ -65,5 +78,52 @@ public abstract class MixinPlayerConnection {
                         .callEvent(new PlayerActiveEvent(player, MinecraftServer.aw()));
             }
         }
+    }
+
+    /* Replacement keepalive packet sender */
+    @Inject(method = "e", at = @At(
+            value = "JUMP",
+            opcode = Opcodes.IFLE,
+            ordinal = 0
+    ))
+    public void onSendKeepAlive(CallbackInfo cb) {
+        long threshold = HeliosMod.INSTANCE.getConfigurationWrapper()
+                .getConfiguration()
+                .getPlayerConfiguration()
+                .getKeepalivePacketThreshold();
+
+        long networkTickCount = (long) this.e;
+        long lastSentPingPacket = this.h;
+        if(networkTickCount - lastSentPingPacket > threshold) {
+            /* lastSentPingPacket */ this.h = networkTickCount;
+            /* lastPingTime = currentTimeMillis() */ this.g = this.d();
+            /* keepAliveId = lastPingTime */ this.f = (int) this.g;
+            sendPacket(new PacketPlayOutKeepAlive(this.f));
+        }
+    }
+
+    /*
+     * Fuck following if statement:
+     *
+     * if(this.e - this.h > 40L)
+     *
+     * Since (0 - 0) > 40 == false
+     */
+    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = NETWORK_TICK_COUNT, ordinal = 1))
+    public int getNetworkTickCount(PlayerConnection playerConnection) { return 0; }
+    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = LAST_SENT_PING_PACKET, ordinal = 0))
+    public long getLastSentPingPacket(PlayerConnection playerConnection) { return 0; }
+    /* End fucking the if statement :) */
+
+    @Inject(method = PROCESS_KEEP_ALIVE, cancellable = true, at = @At("HEAD"))
+    public void onProcessKeepAlive(PacketPlayInKeepAlive keepAlive, CallbackInfo cb) {
+        int keepAliveKey = this.f;
+        int packetKey = keepAlive.a();
+        if(keepAliveKey == packetKey) {
+            int i = (int) (this.d() - this.g);
+            this.player.ping = (this.player.ping * 3 + i) / 4;
+        }
+
+        cb.cancel();
     }
 }
