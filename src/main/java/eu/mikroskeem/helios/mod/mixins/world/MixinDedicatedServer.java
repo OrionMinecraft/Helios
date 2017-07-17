@@ -46,9 +46,7 @@ public abstract class MixinDedicatedServer {
                 .getConfiguration()
                 .getWorldConfiguration()
                 .getDisableUUIDConversion();
-        if(disable) {
-            ci.cancel();
+        if(disable)
             ci.setReturnValue(true);
-        }
     }
 }
