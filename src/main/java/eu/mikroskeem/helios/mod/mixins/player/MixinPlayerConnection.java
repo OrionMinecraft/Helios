@@ -50,7 +50,7 @@ public abstract class MixinPlayerConnection {
     private final static String NETWORK_TICK_COUNT = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;e:I";
     private final static String LAST_SENT_PING_PACKET = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;h:J";
     private final static String PROCESS_KEEP_ALIVE = "a(Lnet/minecraft/server/v1_12_R1/PacketPlayInKeepAlive;)V";
-    private final static String RESET_IDLE_TIMER = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;resetIdleTimer()V";
+    private final static String GET_LAST_ACTIVE_TIME = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;J()J";
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
     @Shadow public abstract CraftPlayer getPlayer();
@@ -63,19 +63,19 @@ public abstract class MixinPlayerConnection {
 
     private int helios$awayTicks = 0;
 
-    @Inject(method = "e", cancellable = true, at = @At(value = "INVOKE", target = RESET_IDLE_TIMER))
-    public void onIdleKickBlock(CallbackInfo ci) {
+    @Redirect(method = "e", at = @At(value = "INVOKE", target = GET_LAST_ACTIVE_TIME, ordinal = 0))
+    public long getLastActiveTime(EntityPlayer entityPlayer) {
         boolean dontKick = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
                 .getPlayerConfiguration()
                 .getDontKickOppedPlayersOnIdle();
 
-        if(this.player.getBukkitEntity().isOp() && dontKick) {
-            ci.cancel();
-
-            /* TODO: Better solution */
-            onUpdate(ci);
-        }
+        if(entityPlayer.getBukkitEntity().isOp() && dontKick)
+            /* if(0L > 0L && ...) */
+            return 0L;
+        else
+            /* Default */
+            return entityPlayer.J();
     }
 
     @Inject(method = "e", at = @At("TAIL"))
