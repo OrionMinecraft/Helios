@@ -23,41 +23,12 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.mixins.core;
-
-import eu.mikroskeem.helios.mod.HeliosMod;
-import eu.mikroskeem.helios.mod.api.events.BukkitInitializedEvent;
-import net.minecraft.server.v1_12_R1.MinecraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+package eu.mikroskeem.helios.mod.api.events;
 
 /**
- * Cosmetical CraftServer mixin
+ * This event gets fired on {@link eu.mikroskeem.helios.mod.HeliosMod#eventBus} when Bukkit's
+ * {@link org.bukkit.Server} instance is set
  *
  * @author Mark Vainomaa
  */
-@Mixin(value = CraftServer.class, remap = false)
-public abstract class MixinCraftServer {
-    @Shadow @Final private String serverVersion;
-    @Shadow @Final protected MinecraftServer console;
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    public void initCraftServer(CallbackInfo cb) {
-        HeliosMod.INSTANCE.eventBus.post(new BukkitInitializedEvent());
-    }
-
-    public String getName() {
-        return "Helios/Paper";
-    }
-
-    public String toString() {
-        return "CraftServer{serverName=" + getName() + ",serverVersion=" + this.serverVersion +
-                ",minecraftVersion=" + this.console.getVersion() + '}';
-    }
-}
+public final class BukkitInitializedEvent {}

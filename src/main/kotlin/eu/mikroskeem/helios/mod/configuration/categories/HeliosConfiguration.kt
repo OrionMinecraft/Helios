@@ -54,4 +54,8 @@ class HeliosConfiguration {
     @Setting(value = "exploit", comment = "Anti-exploit configuration")
     var exploitConfiguration = ExploitConfiguration()
         private set
+
+    @Setting(value = "sentry", comment = "Sentry integration configuration")
+    var sentryConfiguration = SentryConfiguration()
+        private set
 }

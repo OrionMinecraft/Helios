@@ -25,8 +25,13 @@
 
 package eu.mikroskeem.helios.mod;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import eu.mikroskeem.helios.mod.api.events.BukkitInitializedEvent;
 import eu.mikroskeem.helios.mod.configuration.Configuration;
+import eu.mikroskeem.helios.mod.plugin.HeliosPluginDescription;
+import eu.mikroskeem.helios.mod.plugin.HeliosPluginLoader;
+import eu.mikroskeem.helios.plugin.HeliosPlugin;
 import eu.mikroskeem.orion.api.Orion;
 import eu.mikroskeem.orion.api.annotations.OrionMod;
 import eu.mikroskeem.orion.api.events.ModConstructEvent;
@@ -35,6 +40,8 @@ import eu.mikroskeem.shuriken.common.SneakyThrow;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.apache.logging.log4j.Logger;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 
 import javax.inject.Inject;
 
@@ -48,6 +55,7 @@ import javax.inject.Inject;
 public final class HeliosMod {
     public static HeliosMod INSTANCE;
 
+    @Inject public EventBus eventBus;
     @Inject public Logger logger;
     @Inject private Orion orion;
     @Inject private ConfigurationLoader<CommentedConfigurationNode> configurationLoader;
@@ -58,11 +66,19 @@ public final class HeliosMod {
         INSTANCE = this;
         logger.info("Loading Helios...");
 
-        /* Register Kotlin library */
-        logger.info("Setting up Kotlin");
+        logger.info("Setting up libraries");
+        /* ** Register Kotlin library */
         orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib:1.1.3-2");
         orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.3-2");
         orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.3-2");
+        orion.registerLibrary("com.fasterxml.jackson.core:jackson-core:2.8.9");
+
+        /* ** Add slf4j-over-log4j */
+        orion.registerLibrary("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1");
+
+        /* ** Sentry */
+        orion.registerLibrary("io.sentry:sentry:1.3.0");
+        orion.registerLibrary("org.slf4j:slf4j-api:1.7.25");
 
         /* Register AT */
         logger.info("Setting up ATs...");
@@ -85,6 +101,16 @@ public final class HeliosMod {
         configuration = new Configuration(configurationLoader);
         loadConfiguration();
         saveConfiguration();
+    }
+
+    @Subscribe
+    public void on(BukkitInitializedEvent e) throws Exception {
+        Server server = Bukkit.getServer();
+        HeliosPluginLoader.HELIOS_PLUGINS.put(
+                HeliosPlugin.class,
+                new HeliosPluginDescription("Helios", "0.0.1", HeliosPlugin.class.getName())
+        );
+        server.getPluginManager().registerInterface(HeliosPluginLoader.class);
     }
 
     public void loadConfiguration() {

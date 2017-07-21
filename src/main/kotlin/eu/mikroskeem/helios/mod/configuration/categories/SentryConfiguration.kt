@@ -23,41 +23,24 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.mixins.core;
+package eu.mikroskeem.helios.mod.configuration.categories
 
-import eu.mikroskeem.helios.mod.HeliosMod;
-import eu.mikroskeem.helios.mod.api.events.BukkitInitializedEvent;
-import net.minecraft.server.v1_12_R1.MinecraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+import ninja.leaping.configurate.objectmapping.Setting
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
 
 /**
- * Cosmetical CraftServer mixin
+ * Sentry sub-configuration
  *
  * @author Mark Vainomaa
  */
-@Mixin(value = CraftServer.class, remap = false)
-public abstract class MixinCraftServer {
-    @Shadow @Final private String serverVersion;
-    @Shadow @Final protected MinecraftServer console;
+@ConfigSerializable
+class SentryConfiguration {
+    @Setting(value = "enable-sentry", comment = "Whether to enable Sentry integration or not. " +
+            "Configure `sentry-dsn` as well after you turn this on.")
+    var enableSentry = false
+        private set
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    public void initCraftServer(CallbackInfo cb) {
-        HeliosMod.INSTANCE.eventBus.post(new BukkitInitializedEvent());
-    }
-
-    public String getName() {
-        return "Helios/Paper";
-    }
-
-    public String toString() {
-        return "CraftServer{serverName=" + getName() + ",serverVersion=" + this.serverVersion +
-                ",minecraftVersion=" + this.console.getVersion() + '}';
-    }
+    @Setting(value = "sentry-dsn", comment = "Sentry Data Source Name, see https://sentry.io")
+    var sentryDsn = ""
+        private set
 }
