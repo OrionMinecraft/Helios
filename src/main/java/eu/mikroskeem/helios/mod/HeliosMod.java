@@ -72,8 +72,10 @@ public final class HeliosMod {
         logger.info("Setting up core mixins...");
         orion.registerMixinConfig("mixins.helios.core.json");
         orion.registerMixinConfig("mixins.helios.event.json");
+        orion.registerMixinConfig("mixins.helios.exploit.json");
         orion.registerMixinConfig("mixins.helios.inventory.json");
         orion.registerMixinConfig("mixins.helios.player.json");
+        orion.registerMixinConfig("mixins.helios.packets.json");
         orion.registerMixinConfig("mixins.helios.world.json");
     }
 

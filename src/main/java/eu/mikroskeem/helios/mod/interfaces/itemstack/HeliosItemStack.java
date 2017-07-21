@@ -23,35 +23,12 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration.categories
-
-import ninja.leaping.configurate.objectmapping.Setting
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
+package eu.mikroskeem.helios.mod.interfaces.itemstack;
 
 /**
- * Helios configuration
- *
  * @author Mark Vainomaa
  */
-@ConfigSerializable
-class HeliosConfiguration {
-    @Setting(value = "player", comment = "Player configuration")
-    var playerConfiguration = PlayerConfiguration()
-        private set
-
-    @Setting(value = "world", comment = "World configuration")
-    var worldConfiguration = WorldConfiguration()
-        private set
-
-    @Setting(value = "command", comment = "Command system configuration")
-    var commandConfiguration = CommandConfiguration()
-        private set
-
-    @Setting(value = "server", comment = "Server configuration")
-    var serverConfiguration = ServerConfiguration()
-        private set
-
-    @Setting(value = "exploit", comment = "Anti-exploit configuration")
-    var exploitConfiguration = ExploitConfiguration()
-        private set
+public interface HeliosItemStack {
+    boolean isStripped();
+    void setStrippedFlag(boolean value);
 }

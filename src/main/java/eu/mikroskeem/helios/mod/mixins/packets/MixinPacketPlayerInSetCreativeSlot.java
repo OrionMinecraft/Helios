@@ -23,35 +23,24 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration.categories
+package eu.mikroskeem.helios.mod.mixins.packets;
 
-import ninja.leaping.configurate.objectmapping.Setting
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
+import eu.mikroskeem.helios.mod.interfaces.packet.PacketPlayInSetCreativeSlotAccessor;
+import net.minecraft.server.v1_12_R1.ItemStack;
+import net.minecraft.server.v1_12_R1.PacketPlayInSetCreativeSlot;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+
 
 /**
- * Helios configuration
- *
  * @author Mark Vainomaa
  */
-@ConfigSerializable
-class HeliosConfiguration {
-    @Setting(value = "player", comment = "Player configuration")
-    var playerConfiguration = PlayerConfiguration()
-        private set
+@Mixin(value = PacketPlayInSetCreativeSlot.class, remap = false)
+public abstract class MixinPacketPlayerInSetCreativeSlot implements PacketPlayInSetCreativeSlotAccessor {
+    @Shadow private ItemStack b;
 
-    @Setting(value = "world", comment = "World configuration")
-    var worldConfiguration = WorldConfiguration()
-        private set
-
-    @Setting(value = "command", comment = "Command system configuration")
-    var commandConfiguration = CommandConfiguration()
-        private set
-
-    @Setting(value = "server", comment = "Server configuration")
-    var serverConfiguration = ServerConfiguration()
-        private set
-
-    @Setting(value = "exploit", comment = "Anti-exploit configuration")
-    var exploitConfiguration = ExploitConfiguration()
-        private set
+    @Override
+    public void setItemStack(ItemStack itemStack) {
+        this.b = itemStack;
+    }
 }

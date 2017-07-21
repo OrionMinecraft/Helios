@@ -23,35 +23,15 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration.categories
+package eu.mikroskeem.helios.mod.interfaces.packet;
 
-import ninja.leaping.configurate.objectmapping.Setting
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
+import net.minecraft.server.v1_12_R1.ItemStack;
+
 
 /**
- * Helios configuration
- *
  * @author Mark Vainomaa
  */
-@ConfigSerializable
-class HeliosConfiguration {
-    @Setting(value = "player", comment = "Player configuration")
-    var playerConfiguration = PlayerConfiguration()
-        private set
-
-    @Setting(value = "world", comment = "World configuration")
-    var worldConfiguration = WorldConfiguration()
-        private set
-
-    @Setting(value = "command", comment = "Command system configuration")
-    var commandConfiguration = CommandConfiguration()
-        private set
-
-    @Setting(value = "server", comment = "Server configuration")
-    var serverConfiguration = ServerConfiguration()
-        private set
-
-    @Setting(value = "exploit", comment = "Anti-exploit configuration")
-    var exploitConfiguration = ExploitConfiguration()
-        private set
+public interface PacketPlayInSetCreativeSlotAccessor {
+    ItemStack getItemStack();
+    void setItemStack(ItemStack itemStack);
 }

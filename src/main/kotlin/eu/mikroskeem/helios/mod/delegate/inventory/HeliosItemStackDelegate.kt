@@ -54,6 +54,28 @@ object HeliosItemStackDelegate {
     fun getCanPlaceOn(handle: ItemStack): Collection<Material> =
             getMaterialsTag(handle, CAN_PLACE_ON)
 
+    @JvmStatic
+    fun setLore(handle: ItemStack, vararg lore: String): ItemStack =
+        handle.apply {
+            this.tag = NBTTagCompound().apply {
+                this.set("display", NBTTagCompound().apply {
+                    this.set("Lore", NBTTagList().apply {
+                        lore.map(HeliosItemStackDelegate::convertToTag)
+                                .forEach(this::add)
+                    })
+                })
+            }
+        }
+
+    @JvmStatic
+    fun appendLore(handle: ItemStack, vararg lore: String): ItemStack =
+        handle.apply {
+            val loreList = this.tag?.getCompound("display")?.getList("Lore", 8) ?: return setLore(handle, *lore)
+            lore.map(HeliosItemStackDelegate::convertToTag)
+                    .forEach(loreList::add)
+        }
+
+
     // Common code to set materials into NBT tag
     private fun setMaterialsTag(handle: ItemStack, tagName: String, materials: Collection<Material>?) {
         // Create new tag only if materials collection is not null
@@ -96,4 +118,7 @@ object HeliosItemStackDelegate {
                 .map(NBTTagString::c_)
                 .map(CraftMagicNumbers.INSTANCE::getMaterialFromInternalName)
                 .toSet()
+
+    // String -> NBTTagString
+    private fun convertToTag(text: String): NBTTagString = NBTTagString(text)
 }
