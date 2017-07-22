@@ -56,7 +56,6 @@ public class CommandDispatchExceptionEvent extends Event {
      */
     public CommandDispatchExceptionEvent(Command command, CommandSender commandSender, String label, String[] args,
                                          Throwable exception) {
-        super(true);
         this.command = command;
         this.commandSender = commandSender;
         this.label = label;
