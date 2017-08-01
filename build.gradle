@@ -23,6 +23,7 @@ targetCompatibility = 1.8
 repositories {
     mavenLocal()
     mavenCentral()
+
     maven {
         name = 'destroystokyo-repo'
         url = 'https://repo.destroystokyo.com/repository/maven-public/'
@@ -36,6 +37,11 @@ repositories {
     maven {
         name = 'mikroskeem-repo'
         url = 'https://repo.wut.ee/repository/mikroskeem-repo'
+    }
+
+    maven {
+        name = 'spongepowered-repo'
+        url = 'https://repo.spongepowered.org/maven'
     }
 }
 
