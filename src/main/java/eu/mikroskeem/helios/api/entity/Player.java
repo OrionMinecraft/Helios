@@ -25,6 +25,9 @@
 
 package eu.mikroskeem.helios.api.entity;
 
+import eu.mikroskeem.helios.mod.configuration.categories.PlayerConfiguration;
+
+
 /**
  * Helios Player
  *
@@ -40,7 +43,7 @@ public interface Player extends org.bukkit.entity.Player {
 
     /**
      * Shows if player is away or not, value is set by comparing
-     * value in {@link Configuration.PlayerConfiguration#getMillisecondsUntilToMarkPlayerAway()}
+     * value in {@link PlayerConfiguration#getMillisecondsUntilToMarkPlayerAway()}
      *
      * @return Whether player is away or not
      */
