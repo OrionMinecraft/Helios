@@ -23,39 +23,24 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration.categories
+package eu.mikroskeem.helios.mod.configuration
 
 import ninja.leaping.configurate.objectmapping.Setting
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
 
 /**
- * Helios configuration
+ * Sentry sub-configuration
  *
  * @author Mark Vainomaa
  */
 @ConfigSerializable
-class HeliosConfiguration {
-    @Setting(value = "player", comment = "Player configuration")
-    var playerConfiguration = PlayerConfiguration()
+class SentryConfiguration {
+    @Setting(value = "enable-sentry", comment = "Whether to enable Sentry integration or not. " +
+            "Configure `sentry-dsn` as well after you turn this on.")
+    var enableSentry = false
         private set
 
-    @Setting(value = "world", comment = "World configuration")
-    var worldConfiguration = WorldConfiguration()
-        private set
-
-    @Setting(value = "command", comment = "Command system configuration")
-    var commandConfiguration = CommandConfiguration()
-        private set
-
-    @Setting(value = "server", comment = "Server configuration")
-    var serverConfiguration = ServerConfiguration()
-        private set
-
-    @Setting(value = "exploit", comment = "Anti-exploit configuration")
-    var exploitConfiguration = ExploitConfiguration()
-        private set
-
-    @Setting(value = "sentry", comment = "Sentry integration configuration")
-    var sentryConfiguration = SentryConfiguration()
+    @Setting(value = "sentry-dsn", comment = "Sentry Data Source Name, see https://sentry.io")
+    var sentryDsn = ""
         private set
 }

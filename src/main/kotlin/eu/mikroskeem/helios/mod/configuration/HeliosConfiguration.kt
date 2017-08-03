@@ -23,35 +23,39 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration.categories
+package eu.mikroskeem.helios.mod.configuration
 
 import ninja.leaping.configurate.objectmapping.Setting
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
 
 /**
- * Exploit sub-configuration
+ * Helios configuration
  *
  * @author Mark Vainomaa
  */
 @ConfigSerializable
-class ExploitConfiguration {
-    @Setting(value = "prevent-item-name-overflow", comment = "Prevents ItemStack name overflow")
-    var preventItemNameOverflow = true
+class HeliosConfiguration {
+    @Setting(value = "player", comment = "Player configuration")
+    var playerConfiguration = PlayerConfiguration()
         private set
 
-    @Setting(value = "disable-setting-nbt-to-item-in-creative",
-            comment = "Disables setting NBT to item in Creative gamemode. " +
-                    "WARNING: removes NBT even if player moves items around in inventory!")
-    var preventSettingNBTToItem = false
+    @Setting(value = "world", comment = "World configuration")
+    var worldConfiguration = WorldConfiguration()
         private set
 
-    @Setting(value = "disable-copying-containers-in-creative", comment = "Disable copying containers in Creative " +
-            "gamemode. Useful only when `disable-setting-nbt-to-item-in-creative` is set to false.")
-    var preventCopyingContainers = false
+    @Setting(value = "command", comment = "Command system configuration")
+    var commandConfiguration = CommandConfiguration()
         private set
 
-    @Setting(value = "nbt-stripped-from-item-lore",
-            comment = "Text to set in lore for stripped item stack")
-    var nbtStrippedLore = "§6Note: §cNBT stripped from item by server for safety reasons."
+    @Setting(value = "server", comment = "Server configuration")
+    var serverConfiguration = ServerConfiguration()
+        private set
+
+    @Setting(value = "exploit", comment = "Anti-exploit configuration")
+    var exploitConfiguration = ExploitConfiguration()
+        private set
+
+    @Setting(value = "sentry", comment = "Sentry integration configuration")
+    var sentryConfiguration = SentryConfiguration()
         private set
 }

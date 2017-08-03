@@ -29,7 +29,7 @@ import com.destroystokyo.paper.event.player.IllegalPacketEvent;
 import com.destroystokyo.paper.event.server.ServerExceptionEvent;
 import eu.mikroskeem.helios.api.events.error.CommandDispatchExceptionEvent;
 import eu.mikroskeem.helios.mod.HeliosMod;
-import eu.mikroskeem.helios.mod.configuration.categories.SentryConfiguration;
+import eu.mikroskeem.helios.mod.configuration.SentryConfiguration;
 import eu.mikroskeem.helios.mod.plugin.HeliosPluginBase;
 import io.sentry.SentryClient;
 import io.sentry.SentryClientFactory;

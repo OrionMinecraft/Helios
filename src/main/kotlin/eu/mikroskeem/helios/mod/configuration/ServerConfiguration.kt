@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration.categories
+package eu.mikroskeem.helios.mod.configuration
 
 import ninja.leaping.configurate.objectmapping.Setting
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable

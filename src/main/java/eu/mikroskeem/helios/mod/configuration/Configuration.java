@@ -25,7 +25,7 @@
 
 package eu.mikroskeem.helios.mod.configuration;
 
-import eu.mikroskeem.helios.mod.configuration.categories.HeliosConfiguration;
+import eu.mikroskeem.helios.mod.configuration.HeliosConfiguration;
 import eu.mikroskeem.shuriken.common.SneakyThrow;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;

@@ -25,7 +25,7 @@
 
 package eu.mikroskeem.helios.api.entity;
 
-import eu.mikroskeem.helios.mod.configuration.categories.PlayerConfiguration;
+import eu.mikroskeem.helios.mod.configuration.PlayerConfiguration;
 
 
 /**

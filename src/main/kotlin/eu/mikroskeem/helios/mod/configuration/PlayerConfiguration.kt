@@ -23,20 +23,37 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration.categories
+package eu.mikroskeem.helios.mod.configuration
 
 import ninja.leaping.configurate.objectmapping.Setting
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
 
 /**
- * World sub-configuration
+ * Player sub-configuration
  *
  * @author Mark Vainomaa
  */
 @ConfigSerializable
-class WorldConfiguration {
-    @Setting(value = "disable-uuid-conversion", comment = "Disables UUID conversion on startup, useful if server " +
-                    "does *certainly* not need to migrate legacy data")
-    var disableUUIDConversion = false
+class PlayerConfiguration {
+    @Setting(value = "milliseconds-until-to-mark-player-away",
+            comment = "Time how long should player be idle to mark one away")
+    var millisecondsUntilToMarkPlayerAway: Long = 120 * 1000
+        private set
+
+    @Setting(value = "player-data-saving-disabled",
+            comment = "Disables player data saving to disk. Useful for Lobby servers")
+    var playerDataSavingDisabled = false
+        private set
+
+    @Setting(value = "keepalive-packet-send-threshold",
+            comment = "How many ticks should server wait before sending new keep-alive packet to client? " +
+                    "Note that client times out if server doesn't send keep-alives for 20 seconds.")
+    var keepalivePacketThreshold = 40L
+        private set
+
+    @Setting(value = "dont-kick-opped-players-on-idle-timeout",
+            comment = "Should opped players get kicked when they are idle for too long? (specified in server.properties" +
+                    " using `player-idle-timeout` option)")
+    var dontKickOppedPlayersOnIdle = false
         private set
 }

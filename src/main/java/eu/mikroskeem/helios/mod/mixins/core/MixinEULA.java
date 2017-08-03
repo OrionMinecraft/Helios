@@ -26,6 +26,7 @@
 package eu.mikroskeem.helios.mod.mixins.core;
 
 import eu.mikroskeem.helios.mod.HeliosMod;
+import eu.mikroskeem.helios.mod.configuration.ServerConfiguration;
 import net.minecraft.server.v1_12_R1.EULA;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +38,7 @@ import java.io.File;
 
 
 /**
- * Mixin to accept Mojang EULA according to {@link eu.mikroskeem.helios.mod.configuration.categories.ServerConfiguration#acceptEULA}
+ * Mixin to accept Mojang EULA according to {@link ServerConfiguration#acceptEULA}
  *
  * Why? Because you must agree to EULA anyway when you run Minecraft server
  *
