@@ -61,23 +61,21 @@ public abstract class MixinCrashReport {
         OrionCoreAccessor orionCore = MethodReflector.newInstance(orionCoreClass, OrionCoreAccessor.class)
                 .getReflector();
 
-        this.d.a("Orion & Helios - What are those?", () -> {
-            StringBuilder result = new StringBuilder(64);
-            result
-                    .append('\n')
-                    .append("\t\tOrion is a Paper server coremod framework, written using SpongeMixin library\n")
-                    .append("\t\tHelios is modification collection for Paper\n\n")
-                    .append("\t\tSteps to do before reporting an issue:\n")
-                    .append("\t\t- First try to figure out whether issue is caused by a coremod or not,\n")
-                    .append("\t\t\tand then report issue to coremod developer\n")
-                    .append("\t\t- Do old school method - disable coremods one-by-one, and find the bastard who caused this crash\n")
-                    .append("\t\t- Disable Helios, and for last Orion, and see if server keeps crashing\n")
-                    .append("\t\t- If issue is caused by Helios, report issue to https://github.com/OrionMinecraft/Helios\n")
-                    .append("\t\t- If issue is caused by Orion, report issue to https://github.com/OrionMinecraft/Orion\n")
-                    .append("\t\t- If issue is caused by Paper, report issue to https://github.com/PaperMC/Paper\n")
-                    .append("\t\tThank you for your cooperation and reading :-)");
-            return result.toString();
-        });
+        this.d.a("Orion & Helios - What are those?", () -> new StringBuilder(64)
+            .append('\n')
+            .append("\t\tOrion is a Paper server coremod framework, written using SpongeMixin library\n")
+            .append("\t\tHelios is modification collection for Paper\n\n")
+            .append("\t\tSteps to do before reporting an issue:\n")
+            .append("\t\t- First try to figure out whether issue is caused by a coremod or not,\n")
+            .append("\t\t\tand then report issue to coremod developer\n")
+            .append("\t\t- Do old school method - disable coremods one-by-one, and find the bastard who caused this crash\n")
+            .append("\t\t- Disable Helios, and for last Orion, and see if server keeps crashing\n")
+            .append("\t\t- If issue is caused by Helios, report issue to https://github.com/OrionMinecraft/Helios\n")
+            .append("\t\t- If issue is caused by Orion, report issue to https://github.com/OrionMinecraft/Orion\n")
+            .append("\t\t- If issue is caused by Paper, report issue to https://github.com/PaperMC/Paper\n")
+            .append("\t\tThank you for your cooperation and reading :-)")
+            .toString()
+        );
 
         this.d.a("Orion coremods", () -> {
             StringBuilder result = new StringBuilder(64);
