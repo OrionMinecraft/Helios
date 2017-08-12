@@ -34,6 +34,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 /**
  * Mixin to inject more precise spawnpoint into game
@@ -55,47 +57,47 @@ public abstract class MixinEntityPlayer extends Entity {
     @Shadow public abstract CraftPlayer getBukkitEntity();
 
     /* Flag which indicates that player spawn location should be redirected */
-    private boolean helios$redirectWorldSpawn = false;
+    private final AtomicBoolean helios$redirectWorldSpawn = new AtomicBoolean(false);
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = helios$GET_SPAWN_WS))
     private BlockPosition getSpawnProxy_ctor(WorldServer worldServer) {
-        helios$redirectWorldSpawn = true;
+        synchronized (helios$redirectWorldSpawn) {
+            helios$redirectWorldSpawn.set(true);
+        }
         return worldServer.getSpawn();
     }
 
     @Redirect(method = "spawnIn", at = @At(value = "INVOKE", target = helios$GET_SPAWN_W))
     private BlockPosition getSpawnProxy_spawnIn(World world) {
-        helios$redirectWorldSpawn = true;
+        synchronized (helios$redirectWorldSpawn) {
+            helios$redirectWorldSpawn.set(true);
+        }
         return world.getSpawn();
     }
 
     @Redirect(method = "spawnIn", at = @At(value = "INVOKE", target = helios$SET_POS))
     private void setPosition_spawnIn(EntityPlayer entityPlayer, double x, double y, double z) {
-        if(helios$redirectWorldSpawn) {
-            Location spawnpoint = ((HeliosWorldData) world.worldData).getSpawnpoint();
-            setPositionRotation(
-                    spawnpoint.getX(),
-                    spawnpoint.getY(),
-                    spawnpoint.getZ(),
-                    spawnpoint.getYaw(),
-                    spawnpoint.getPitch()
-            );
-            helios$redirectWorldSpawn = false;
-        }
+        helios$redirectWorldSpawn();
     }
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = helios$SET_POS_ROT))
     private void setPositionRotation_ctor(EntityPlayer entity, BlockPosition blockposition, float yaw, float pitch) {
-        if(helios$redirectWorldSpawn) {
-            Location spawnpoint = ((HeliosWorldData) world.worldData).getSpawnpoint();
-            setPositionRotation(
-                    spawnpoint.getX(),
-                    spawnpoint.getY(),
-                    spawnpoint.getZ(),
-                    spawnpoint.getYaw(),
-                    spawnpoint.getPitch()
-            );
-            helios$redirectWorldSpawn = false;
+        helios$redirectWorldSpawn();
+    }
+
+    private void helios$redirectWorldSpawn() {
+        synchronized (helios$redirectWorldSpawn) {
+            if(helios$redirectWorldSpawn.get()) {
+                Location spawnpoint = ((HeliosWorldData) world.worldData).getSpawnpoint();
+                setPositionRotation(
+                        spawnpoint.getX(),
+                        spawnpoint.getY(),
+                        spawnpoint.getZ(),
+                        spawnpoint.getYaw(),
+                        spawnpoint.getPitch()
+                );
+                helios$redirectWorldSpawn.set(false);
+            }
         }
     }
 }
