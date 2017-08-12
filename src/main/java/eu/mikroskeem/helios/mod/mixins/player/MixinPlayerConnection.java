@@ -47,10 +47,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = PlayerConnection.class, remap = false)
 public abstract class MixinPlayerConnection {
-    private final static String NETWORK_TICK_COUNT = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;e:I";
-    private final static String LAST_SENT_PING_PACKET = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;h:J";
-    private final static String PROCESS_KEEP_ALIVE = "a(Lnet/minecraft/server/v1_12_R1/PacketPlayInKeepAlive;)V";
-    private final static String GET_LAST_ACTIVE_TIME = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;J()J";
+    private final static String helios$NETWORK_TICK_COUNT = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;e:I";
+    private final static String helios$LAST_SENT_PING_PACKET = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;h:J";
+    private final static String helios$PROCESS_KEEP_ALIVE = "a(Lnet/minecraft/server/v1_12_R1/PacketPlayInKeepAlive;)V";
+    private final static String helios$GET_LAST_ACTIVE_TIME = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;J()J";
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
     @Shadow public abstract CraftPlayer getPlayer();
@@ -63,8 +63,8 @@ public abstract class MixinPlayerConnection {
 
     private int helios$awayTicks = 0;
 
-    @Redirect(method = "e", at = @At(value = "INVOKE", target = GET_LAST_ACTIVE_TIME, ordinal = 0))
-    public long getLastActiveTime(EntityPlayer entityPlayer) {
+    @Redirect(method = "e", at = @At(value = "INVOKE", target = helios$GET_LAST_ACTIVE_TIME, ordinal = 0))
+    private long getLastActiveTime(EntityPlayer entityPlayer) {
         boolean dontKick = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
                 .getPlayerConfiguration()
@@ -79,7 +79,7 @@ public abstract class MixinPlayerConnection {
     }
 
     @Inject(method = "e", at = @At("TAIL"))
-    public void onUpdate(CallbackInfo cb) {
+    private void onUpdate(CallbackInfo cb) {
         Player player = (Player) getPlayer();
         if(player.isAway()) {
             if(helios$awayTicks == 0) {
@@ -96,13 +96,13 @@ public abstract class MixinPlayerConnection {
         }
     }
 
-    /* Replacement keepalive packet sender */
+    /* Replacement keepalive packet sender: TODO */
     @Inject(method = "e", at = @At(
             value = "JUMP",
             opcode = Opcodes.IFLE,
             ordinal = 0
     ))
-    public void onSendKeepAlive(CallbackInfo cb) {
+    private void onSendKeepAlive(CallbackInfo cb) {
         long threshold = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
                 .getPlayerConfiguration()
@@ -125,14 +125,14 @@ public abstract class MixinPlayerConnection {
      *
      * Since (0 - 0) > 40 == false
      */
-    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = NETWORK_TICK_COUNT, ordinal = 1))
-    public int getNetworkTickCount(PlayerConnection playerConnection) { return 0; }
-    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = LAST_SENT_PING_PACKET, ordinal = 0))
-    public long getLastSentPingPacket(PlayerConnection playerConnection) { return 0; }
+    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = helios$NETWORK_TICK_COUNT, ordinal = 1))
+    private int getNetworkTickCount(PlayerConnection playerConnection) { return 0; }
+    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = helios$LAST_SENT_PING_PACKET, ordinal = 0))
+    private long getLastSentPingPacket(PlayerConnection playerConnection) { return 0; }
     /* End fucking the if statement :) */
 
-    @Inject(method = PROCESS_KEEP_ALIVE, cancellable = true, at = @At("HEAD"))
-    public void onProcessKeepAlive(PacketPlayInKeepAlive keepAlive, CallbackInfo cb) {
+    @Inject(method = helios$PROCESS_KEEP_ALIVE, cancellable = true, at = @At("HEAD"))
+    private void onProcessKeepAlive(PacketPlayInKeepAlive keepAlive, CallbackInfo cb) {
         int keepAliveKey = this.f;
         int packetKey = keepAlive.a();
         if(keepAliveKey == packetKey) {

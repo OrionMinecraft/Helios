@@ -63,7 +63,7 @@ public abstract class MixinSimplePluginManager implements HeliosPluginManager {
     }
 
     @Inject(method = "loadPlugins", at = @At("HEAD"))
-    public void loadHeliosPlugins(File directory, CallbackInfoReturnable<Plugin[]> cir) {
+    private void loadHeliosPlugins(File directory, CallbackInfoReturnable<Plugin[]> cir) {
         HeliosPluginLoader.INSTANCE.getLoadedPlugins().forEach((pluginName, plugin) -> {
             getLookupNames().put(pluginName.toLowerCase(Locale.ENGLISH), plugin);
             getPluginsList().add(plugin);
@@ -71,12 +71,12 @@ public abstract class MixinSimplePluginManager implements HeliosPluginManager {
     }
 
     @Inject(method = "loadPlugins", at = @At("RETURN"))
-    public void onLoadPlugins(File directory, CallbackInfoReturnable<Plugin[]> cir) {
+    private void onLoadPlugins(File directory, CallbackInfoReturnable<Plugin[]> cir) {
         Arrays.stream(cir.getReturnValue()).forEach(p -> callEvent(new PluginLoadEvent(p)));
     }
 
     @Inject(method = "loadPlugin", at = @At("RETURN"))
-    public void onLoadPlugin(File file, CallbackInfoReturnable<Plugin> cir) {
+    private void onLoadPlugin(File file, CallbackInfoReturnable<Plugin> cir) {
         callEvent(new PluginLoadEvent(cir.getReturnValue()));
     }
 }

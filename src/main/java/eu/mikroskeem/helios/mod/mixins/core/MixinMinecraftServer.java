@@ -41,10 +41,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = MinecraftServer.class, remap = false)
 public abstract class MixinMinecraftServer {
-    private final static String LOG_INFO = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V";
+    private final static String helios$LOG_INFO = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V";
 
     @Inject(method = "stop", at = @At(
-            value = "INVOKE", target = LOG_INFO,
+            value = "INVOKE", target = helios$LOG_INFO,
             ordinal = 0, shift = At.Shift.AFTER
     ))
     private void callServerStopping(CallbackInfo ci) {

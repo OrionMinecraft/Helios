@@ -42,7 +42,7 @@ import javax.annotation.Nullable;
  */
 @Mixin(value = ItemStack.class, remap = false)
 public abstract class MixinItemStack implements HeliosItemStack {
-    private final static String HELIOS_STRIPPED = "helios.itemStripped";
+    private final static String helios$HELIOS_STRIPPED = "helios.itemStripped";
 
     @Shadow public abstract boolean hasTag();
     @Shadow @Nullable public abstract NBTTagCompound getTag();
@@ -53,7 +53,7 @@ public abstract class MixinItemStack implements HeliosItemStack {
 
     @Override
     public boolean isStripped() {
-        if(!helios$didCheck && hasTag() && getTag().hasKeyOfType(HELIOS_STRIPPED, 1)) {
+        if(!helios$didCheck && hasTag() && getTag().hasKeyOfType(helios$HELIOS_STRIPPED, 1)) {
             helios$didCheck = true;
             setStrippedFlag(true);
         }
@@ -66,9 +66,9 @@ public abstract class MixinItemStack implements HeliosItemStack {
         helios$didCheck = true;
         helios$isStripped = value;
         if(value) {
-            getTag().set(HELIOS_STRIPPED, new NBTTagByte((byte)1));
+            getTag().set(helios$HELIOS_STRIPPED, new NBTTagByte((byte)1));
         } else {
-            getTag().remove(HELIOS_STRIPPED);
+            getTag().remove(helios$HELIOS_STRIPPED);
         }
     }
 }

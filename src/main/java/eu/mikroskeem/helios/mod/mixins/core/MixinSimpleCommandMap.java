@@ -45,18 +45,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = SimpleCommandMap.class, remap = false)
 public abstract class MixinSimpleCommandMap {
-    private final static String COMMAND_EXECUTE = "Lorg/bukkit/command/Command;execute(" +
+    private final static String helios$COMMAND_EXECUTE = "Lorg/bukkit/command/Command;execute(" +
             "Lorg/bukkit/command/CommandSender;Ljava/lang/String;[Ljava/lang/String;)Z";
 
     @Shadow public abstract boolean register(String fallbackPrefix, Command command);
 
     @Inject(method = "setDefaultCommands()V", at = @At("HEAD"))
-    public void onSetDefaultCommands(CallbackInfo callbackInfo) {
+    private void onSetDefaultCommands(CallbackInfo callbackInfo) {
         /* TODO: Commands */
     }
 
-    @Redirect(method = "dispatch", at = @At(value = "INVOKE", target = COMMAND_EXECUTE))
-    public boolean errorCatchingDispatch(Command command, CommandSender sender, String commandLabel, String[] args) {
+    @Redirect(method = "dispatch", at = @At(value = "INVOKE", target = helios$COMMAND_EXECUTE))
+    private boolean errorCatchingDispatch(Command command, CommandSender sender, String commandLabel, String[] args) {
         try {
             return command.execute(sender, commandLabel, args);
         } catch (Throwable e) {

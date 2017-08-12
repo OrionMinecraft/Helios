@@ -51,7 +51,7 @@ public abstract class MixinCrashReport {
     @Shadow @Final private CrashReportSystemDetails d;
 
     @Inject(method = "h", at = @At("RETURN"))
-    public void onPopulateEnvironment(CallbackInfo cb) {
+    private void onPopulateEnvironment(CallbackInfo cb) {
         /* TODO: Expose given information in Orion */
         ClassWrapper<?> orionCoreClass = Reflect.getClassThrows("eu.mikroskeem.orion.core.OrionCore");
         Object orionCoreInstance = orionCoreClass.getField("INSTANCE", orionCoreClass.getWrappedClass())

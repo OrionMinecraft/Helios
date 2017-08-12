@@ -47,20 +47,20 @@ import java.io.File;
 @Mixin(value = EULA.class, remap = false)
 public abstract class MixinEULA {
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void onInit(File file, CallbackInfo ci) {
+    private void onInit(File file, CallbackInfo ci) {
         /* Remove EULA agree system property if present */
         if(helios$doesAccept() && Boolean.getBoolean("com.mojang.eula.agree"))
             System.getProperties().remove("com.mojang.eula.agree");
     }
 
     @Inject(method = "a(Ljava/io/File;)Z", cancellable = true, at = @At("HEAD"))
-    public void onA(CallbackInfoReturnable<Boolean> cb) {
+    private void onA(CallbackInfoReturnable<Boolean> cb) {
         if(helios$doesAccept())
             cb.setReturnValue(true);
     }
 
     @Inject(method = "b", cancellable = true, at = @At("HEAD"))
-    public void onB(CallbackInfo cb) {
+    private void onB(CallbackInfo cb) {
         if(helios$doesAccept())
             cb.cancel();
     }

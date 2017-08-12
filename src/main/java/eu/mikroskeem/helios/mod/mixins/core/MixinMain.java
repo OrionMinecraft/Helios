@@ -42,7 +42,7 @@ import java.io.PrintStream;
  */
 @Mixin(value = Main.class, remap = false)
 public abstract class MixinMain {
-    private final static Logger logger = LogManager.getLogger(Main.class.getName());
+    private final static Logger helios$logger = LogManager.getLogger(Main.class.getName());
 
     @Redirect(method = "main", at = @At(
             value = "INVOKE",
@@ -50,9 +50,9 @@ public abstract class MixinMain {
     ))
     private static void onPrintln(PrintStream printStream, String text) {
         if(printStream.equals(System.err)) {
-            logger.error(text);
+            helios$logger.error(text);
         } else if(printStream.equals(System.out)) {
-            logger.info(text);
+            helios$logger.info(text);
         } else {
             printStream.println(text);
         }

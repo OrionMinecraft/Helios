@@ -42,16 +42,16 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(value = PlayerList.class, remap = false)
 public abstract class MixinPlayerList {
-    private final static String MOVE_TO_WORLD = "moveToWorld(Lnet/minecraft/server/v1_12_R1/EntityPlayer;IZ" +
+    private final static String helios$MOVE_TO_WORLD = "moveToWorld(Lnet/minecraft/server/v1_12_R1/EntityPlayer;IZ" +
             "Lorg/bukkit/Location;Z)Lnet/minecraft/server/v1_12_R1/EntityPlayer;";
 
-    @Redirect(method = MOVE_TO_WORLD,
+    @Redirect(method = helios$MOVE_TO_WORLD,
             at = @At(value = "NEW",
                     target = "(Lorg/bukkit/World;DDD)Lorg/bukkit/Location;",
                     ordinal = 1,
                     args = "class=org/bukkit/Location"
             ))
-    public Location newLocation(World world, double x, double y, double z) {
+    private Location newLocation(World world, double x, double y, double z) {
         return ((HeliosWorldData) ((CraftWorld) world).getHandle().worldData).getSpawnpoint();
     }
 }

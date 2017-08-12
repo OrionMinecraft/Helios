@@ -46,7 +46,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = WorldData.class, priority = 1001, remap = false)
 public abstract class MixinWorldData implements HeliosWorldData {
-    private final static String NBT_BASE = "helios.spawnpoint";
+    private final static String helios$NBT_BASE = "helios.spawnpoint";
 
     @Shadow public WorldServer world;
     @Shadow public abstract int b(); // MCP - getSpawnX
@@ -85,25 +85,25 @@ public abstract class MixinWorldData implements HeliosWorldData {
     /* updateTagCompound - in MCP */
     @Inject(method = "a(Lnet/minecraft/server/v1_12_R1/NBTTagCompound;" +
             "Lnet/minecraft/server/v1_12_R1/NBTTagCompound;)V", at = @At("HEAD"))
-    public void onUpdateTagCompound(NBTTagCompound nbt, NBTTagCompound playerNbt, CallbackInfo cb) {
+    private void onUpdateTagCompound(NBTTagCompound nbt, NBTTagCompound playerNbt, CallbackInfo cb) {
         NBTTagCompound heliosSpawn = new NBTTagCompound();
         heliosSpawn.setDouble("x", getSpawnpointX());
         heliosSpawn.setDouble("y", getSpawnpointY());
         heliosSpawn.setDouble("z", getSpawnpointZ());
         heliosSpawn.setFloat("yaw", getSpawnpointYaw());
         heliosSpawn.setFloat("pitch", getSpawnpointPitch());
-        nbt.set(NBT_BASE, heliosSpawn);
+        nbt.set(helios$NBT_BASE, heliosSpawn);
     }
 
     @Inject(method = "<init>(Lnet/minecraft/server/v1_12_R1/NBTTagCompound;)V", at = @At("RETURN"))
-    public void onConstructUsingNBT(NBTTagCompound nbt, CallbackInfo cb) {
+    private void onConstructUsingNBT(NBTTagCompound nbt, CallbackInfo cb) {
         setSpawnpointX(this.b());
         setSpawnpointY(this.c());
         setSpawnpointZ(this.d());
         setSpawnpointYaw(0);
         setSpawnpointPitch(0);
-        if(nbt.hasKeyOfType(NBT_BASE, 10)) {
-            NBTTagCompound spawnpoint = nbt.getCompound(NBT_BASE);
+        if(nbt.hasKeyOfType(helios$NBT_BASE, 10)) {
+            NBTTagCompound spawnpoint = nbt.getCompound(helios$NBT_BASE);
             setSpawnpointX(spawnpoint.getDouble("x"));
             setSpawnpointY(spawnpoint.getDouble("y"));
             setSpawnpointZ(spawnpoint.getDouble("z"));
@@ -113,7 +113,7 @@ public abstract class MixinWorldData implements HeliosWorldData {
     }
 
     @Inject(method = "<init>(Lnet/minecraft/server/v1_12_R1/WorldData;)V", at = @At("RETURN"))
-    public void onConstructUsingOtherWorldData(WorldData worldData, CallbackInfo cb) {
+    private void onConstructUsingOtherWorldData(WorldData worldData, CallbackInfo cb) {
         HeliosWorldData heliosWorldData = ((HeliosWorldData) worldData);
         setSpawnpointX(heliosWorldData.getSpawnpointX());
         setSpawnpointY(heliosWorldData.getSpawnpointY());
@@ -124,7 +124,7 @@ public abstract class MixinWorldData implements HeliosWorldData {
 
     /* Cancel spawn setting from internal NMS code */
     @Inject(method = "setSpawn", cancellable = true, at = @At("HEAD"))
-    public void onSetSpawn(BlockPosition blockPosition, CallbackInfo cb) {
+    private void onSetSpawn(BlockPosition blockPosition, CallbackInfo cb) {
         new Throwable("Helios: WorldData -> setSpawn(). Please report this to @mikroskeem").printStackTrace();
         cb.cancel();
     }

@@ -48,7 +48,7 @@ public abstract class MixinCraftServer {
     @Shadow @Final protected MinecraftServer console;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void initCraftServer(CallbackInfo cb) {
+    private void initCraftServer(CallbackInfo cb) {
         HeliosMod.INSTANCE.eventBus.post(new BukkitInitializedEvent());
     }
 

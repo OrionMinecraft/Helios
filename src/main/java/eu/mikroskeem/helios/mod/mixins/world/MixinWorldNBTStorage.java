@@ -45,18 +45,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = WorldNBTStorage.class, remap = false)
 @Implements(@Interface(iface = IPlayerFileData.class, prefix = "pfd$"))
 public abstract class MixinWorldNBTStorage {
-    private final static String[] EMPTY_STRING_ARRAY = new String[0];
+    private final static String[] helios$EMPTY_STRING_ARRAY = new String[0];
 
     @Shadow public abstract String[] getSeenPlayers();
 
     @Inject(method = "save", cancellable = true, at = @At("HEAD"))
-    public void onSave(EntityHuman e, CallbackInfo cb) {
+    private void onSave(EntityHuman e, CallbackInfo cb) {
         if(helios$isSavingDisabled())
             cb.cancel();
     }
 
     @Inject(method = "load", cancellable = true, at = @At("HEAD"))
-    public void load(EntityHuman e, CallbackInfoReturnable<NBTTagCompound> cb) {
+    private void onLoad(EntityHuman e, CallbackInfoReturnable<NBTTagCompound> cb) {
         if(helios$isSavingDisabled())
             cb.setReturnValue(null);
     }
@@ -64,7 +64,7 @@ public abstract class MixinWorldNBTStorage {
     @Intrinsic(displace = true)
     public String[] pfd$getSeenPlayers() {
         if(helios$isSavingDisabled())
-            return EMPTY_STRING_ARRAY;
+            return helios$EMPTY_STRING_ARRAY;
         return this.getSeenPlayers();
     }
 

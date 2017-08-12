@@ -45,7 +45,7 @@ public abstract class MixinWorld {
     @Shadow public WorldData worldData;
 
     @Inject(method = "A", cancellable = true, at = @At("HEAD"))
-    public void onSetSpawn(BlockPosition blockposition, CallbackInfo cb) {
+    private void onSetSpawn(BlockPosition blockposition, CallbackInfo cb) {
         new Throwable("Helios: World -> setSpawn(). Please report this to @mikroskeem").printStackTrace();
         cb.cancel();
     }

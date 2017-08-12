@@ -41,7 +41,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = DedicatedServer.class, remap = false)
 public abstract class MixinDedicatedServer {
     @Inject(method = "aS", cancellable = true, at = @At("HEAD"))
-    public void onUUIDMigrate(CallbackInfoReturnable<Boolean> ci) {
+    private void onUUIDMigrate(CallbackInfoReturnable<Boolean> ci) {
         boolean disable = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
                 .getWorldConfiguration()

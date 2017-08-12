@@ -40,15 +40,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(value = VersionCommand.class, remap = false)
 public abstract class MixinVersionCommand {
-    private final static String EXECUTE = "execute(Lorg/bukkit/command/CommandSender;" +
+    private final static String helios$EXECUTE = "execute(Lorg/bukkit/command/CommandSender;" +
             "Ljava/lang/String;[Ljava/lang/String;)Z";
-    private final static String SEND_VERSION = "Lorg/bukkit/command/defaults/VersionCommand;" +
+    private final static String helios$SEND_VERSION = "Lorg/bukkit/command/defaults/VersionCommand;" +
             "sendVersion(Lorg/bukkit/command/CommandSender;)V";
 
     @Shadow protected abstract void sendVersion(CommandSender sender);
 
-    @Redirect(method = EXECUTE, at = @At(value = "INVOKE", target = SEND_VERSION))
-    public void proxySendVersion(VersionCommand versionCommand, CommandSender sender) {
+    @Redirect(method = helios$EXECUTE, at = @At(value = "INVOKE", target = helios$SEND_VERSION))
+    private void proxySendVersion(VersionCommand versionCommand, CommandSender sender) {
         sendVersion(sender);
         sender.sendMessage("§7Server uses §6Helios§7, made with §c\u2764 §7by §c§lmikroskeem");
     }

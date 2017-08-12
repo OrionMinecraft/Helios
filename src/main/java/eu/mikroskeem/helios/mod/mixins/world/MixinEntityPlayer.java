@@ -34,6 +34,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+
 /**
  * Mixin to inject more precise spawnpoint into game
  *
@@ -41,12 +42,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(value = EntityPlayer.class, remap = false)
 public abstract class MixinEntityPlayer extends Entity {
-    private final static String GET_SPAWN_WS = "Lnet/minecraft/server/v1_12_R1/WorldServer;" +
+    private final static String helios$GET_SPAWN_WS = "Lnet/minecraft/server/v1_12_R1/WorldServer;" +
             "getSpawn()Lnet/minecraft/server/v1_12_R1/BlockPosition;";
-    private final static String GET_SPAWN_W = "Lnet/minecraft/server/v1_12_R1/World;getSpawn()" +
+    private final static String helios$GET_SPAWN_W = "Lnet/minecraft/server/v1_12_R1/World;getSpawn()" +
             "Lnet/minecraft/server/v1_12_R1/BlockPosition;";
-    private final static String SET_POS = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;setPosition(DDD)V";
-    private final static String SET_POS_ROT = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;" +
+    private final static String helios$SET_POS = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;setPosition(DDD)V";
+    private final static String helios$SET_POS_ROT = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;" +
             "setPositionRotation(Lnet/minecraft/server/v1_12_R1/BlockPosition;FF)V";
 
     public MixinEntityPlayer() { super(null); }
@@ -56,20 +57,20 @@ public abstract class MixinEntityPlayer extends Entity {
     /* Flag which indicates that player spawn location should be redirected */
     private boolean helios$redirectWorldSpawn = false;
 
-    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = GET_SPAWN_WS))
-    public BlockPosition getSpawnProxy_ctor(WorldServer worldServer) {
+    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = helios$GET_SPAWN_WS))
+    private BlockPosition getSpawnProxy_ctor(WorldServer worldServer) {
         helios$redirectWorldSpawn = true;
         return worldServer.getSpawn();
     }
 
-    @Redirect(method = "spawnIn", at = @At(value = "INVOKE", target = GET_SPAWN_W))
-    public BlockPosition getSpawnProxy_spawnIn(World world) {
+    @Redirect(method = "spawnIn", at = @At(value = "INVOKE", target = helios$GET_SPAWN_W))
+    private BlockPosition getSpawnProxy_spawnIn(World world) {
         helios$redirectWorldSpawn = true;
         return world.getSpawn();
     }
 
-    @Redirect(method = "spawnIn", at = @At(value = "INVOKE", target = SET_POS))
-    public void setPosition_spawnIn(EntityPlayer entityPlayer, double x, double y, double z) {
+    @Redirect(method = "spawnIn", at = @At(value = "INVOKE", target = helios$SET_POS))
+    private void setPosition_spawnIn(EntityPlayer entityPlayer, double x, double y, double z) {
         if(helios$redirectWorldSpawn) {
             Location spawnpoint = ((HeliosWorldData) world.worldData).getSpawnpoint();
             setPositionRotation(
@@ -83,8 +84,8 @@ public abstract class MixinEntityPlayer extends Entity {
         }
     }
 
-    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = SET_POS_ROT))
-    public void setPositionRotation_ctor(EntityPlayer entity, BlockPosition blockposition, float yaw, float pitch) {
+    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = helios$SET_POS_ROT))
+    private void setPositionRotation_ctor(EntityPlayer entity, BlockPosition blockposition, float yaw, float pitch) {
         if(helios$redirectWorldSpawn) {
             Location spawnpoint = ((HeliosWorldData) world.worldData).getSpawnpoint();
             setPositionRotation(

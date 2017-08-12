@@ -42,7 +42,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = DedicatedServer.class, remap = false)
 public abstract class MixinDedicatedServer {
     @Inject(method = "init", at = @At("TAIL"))
-    public void onDone(CallbackInfoReturnable<Boolean> cb) {
+    private void onDone(CallbackInfoReturnable<Boolean> cb) {
         CallEventSafe.callEvent(new ServerStartedEvent());
     }
 }
