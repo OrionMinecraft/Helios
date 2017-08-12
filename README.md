@@ -26,6 +26,7 @@ Plugin API/Tweaks collection on top of an [Orion](https://github.com/OrionMinecr
     - Strict check for item name length on Creative gamemode
     - Disable using NBT received from Creative gamemode³
     - Disable copying container blocks
+    - Validate player's locale string
 - (Optional) [Sentry](https://sentry.io) support:
     - Get instantly notified of server errors (in production, server shouldn't throw any exceptions, eh? :wink:)
 
@@ -36,7 +37,7 @@ Plugin API/Tweaks collection on top of an [Orion](https://github.com/OrionMinecr
 
 ## Requirements
 - [Orion](https://github.com/OrionMinecraft/Orion)
-- [Paper](https://github.com/PaperMC/Paper) 1.12
+- [Paper](https://github.com/PaperMC/Paper) 1.12.1
 - Java 8
 
 ## Installation
