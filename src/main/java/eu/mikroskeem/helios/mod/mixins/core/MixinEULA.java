@@ -68,7 +68,7 @@ public abstract class MixinEULA {
     private boolean helios$doesAccept() {
         return HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getServerConfiguration()
+                .getServer()
                 .getAcceptEULA();
     }
 }

@@ -134,5 +134,5 @@ class HeliosPlugin: HeliosPluginBase(), Listener {
     }
 
     private fun getSConfig(): SentryConfiguration =
-        HeliosMod.INSTANCE.configurationWrapper.configuration.sentryConfiguration
+        HeliosMod.INSTANCE.configurationWrapper.configuration.sentry
 }

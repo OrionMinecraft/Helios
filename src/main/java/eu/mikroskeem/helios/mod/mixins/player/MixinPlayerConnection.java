@@ -67,7 +67,7 @@ public abstract class MixinPlayerConnection {
     private long getLastActiveTime(EntityPlayer entityPlayer) {
         boolean dontKick = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getPlayerConfiguration()
+                .getPlayer()
                 .getDontKickOppedPlayersOnIdle();
 
         if(entityPlayer.getBukkitEntity().isOp() && dontKick)
@@ -105,7 +105,7 @@ public abstract class MixinPlayerConnection {
     private void onSendKeepAlive(CallbackInfo cb) {
         long threshold = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getPlayerConfiguration()
+                .getPlayer()
                 .getKeepalivePacketThreshold();
 
         long networkTickCount = (long) this.e;

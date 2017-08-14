@@ -57,7 +57,7 @@ public abstract class MixinCraftPlayer implements Player {
     public boolean isAway() {
         long configuredAwayTime = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getPlayerConfiguration()
+                .getPlayer()
                 .getMillisecondsUntilToMarkPlayerAway();
         long currentTime = MinecraftServer.aw();
         return (currentTime - this.getLastActiveTime()) >= configuredAwayTime;

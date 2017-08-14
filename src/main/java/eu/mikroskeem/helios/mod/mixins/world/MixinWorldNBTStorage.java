@@ -71,7 +71,7 @@ public abstract class MixinWorldNBTStorage {
     private boolean helios$isSavingDisabled() {
         return HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getPlayerConfiguration()
+                .getPlayer()
                 .getPlayerDataSavingDisabled();
     }
 }

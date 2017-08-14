@@ -44,7 +44,7 @@ public abstract class MixinDedicatedServer {
     private void onUUIDMigrate(CallbackInfoReturnable<Boolean> ci) {
         boolean disable = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getWorldConfiguration()
+                .getWorld()
                 .getDisableUUIDConversion();
         if(disable)
             ci.setReturnValue(true);

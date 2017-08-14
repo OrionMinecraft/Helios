@@ -36,26 +36,26 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
 @ConfigSerializable
 class HeliosConfiguration {
     @Setting(value = "player", comment = "Player configuration")
-    var playerConfiguration = PlayerConfiguration()
+    var player = PlayerConfiguration()
         private set
 
     @Setting(value = "world", comment = "World configuration")
-    var worldConfiguration = WorldConfiguration()
+    var world = WorldConfiguration()
         private set
 
     @Setting(value = "command", comment = "Command system configuration")
-    var commandConfiguration = CommandConfiguration()
+    var command = CommandConfiguration()
         private set
 
     @Setting(value = "server", comment = "Server configuration")
-    var serverConfiguration = ServerConfiguration()
+    var server = ServerConfiguration()
         private set
 
     @Setting(value = "exploit", comment = "Anti-exploit configuration")
-    var exploitConfiguration = ExploitConfiguration()
+    var exploit = ExploitConfiguration()
         private set
 
     @Setting(value = "sentry", comment = "Sentry integration configuration")
-    var sentryConfiguration = SentryConfiguration()
+    var sentry = SentryConfiguration()
         private set
 }

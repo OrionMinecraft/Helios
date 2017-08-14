@@ -51,12 +51,12 @@ public abstract class MixinCommand {
         /* Send permission message */
         boolean shouldOverride = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getCommandConfiguration()
+                .getCommand()
                 .getOverridePluginCommandPermissionDeniedMessage();
 
         String overrideMessage = HeliosMod.INSTANCE.getConfigurationWrapper()
                 .getConfiguration()
-                .getCommandConfiguration()
+                .getCommand()
                 .getPermissionDeniedMessage();
 
         /* Pick correct message and send it to target */
