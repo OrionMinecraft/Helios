@@ -26,6 +26,7 @@
 package eu.mikroskeem.helios.api.entity;
 
 import eu.mikroskeem.helios.mod.configuration.PlayerConfiguration;
+import org.jetbrains.annotations.Contract;
 
 
 /**
@@ -48,4 +49,12 @@ public interface Player extends org.bukkit.entity.Player {
      * @return Whether player is away or not
      */
     boolean isAway();
+
+    /**
+     * Sends an JSON message to player. Use <pre>net.kyori:text</pre> or similiar library for that
+     *
+     * @param jsonMessage JSON message
+     */
+    @Contract("null -> fail")
+    void sendJsonMessage(String jsonMessage);
 }

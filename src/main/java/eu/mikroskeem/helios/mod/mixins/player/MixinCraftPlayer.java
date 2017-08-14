@@ -28,8 +28,11 @@ package eu.mikroskeem.helios.mod.mixins.player;
 import eu.mikroskeem.helios.api.entity.Player;
 import eu.mikroskeem.helios.api.events.player.chat.PlayerPluginSendMessageEvent;
 import eu.mikroskeem.helios.mod.HeliosMod;
+import eu.mikroskeem.shuriken.common.Ensure;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.MinecraftServer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.spongepowered.asm.mixin.*;
@@ -67,5 +70,13 @@ public abstract class MixinCraftPlayer implements Player {
         if(!event.isCancelled()) {
             sendMessage(message);
         }
+    }
+
+    @Override
+    public void sendJsonMessage(String jsonMessage) {
+        IChatBaseComponent nmsChatComponent = IChatBaseComponent.ChatSerializer
+                .a(Ensure.notNull(jsonMessage, "Message must not be null!"));
+        PacketPlayOutChat packet = new PacketPlayOutChat(nmsChatComponent);
+        getHandle().playerConnection.sendPacket(packet);
     }
 }
