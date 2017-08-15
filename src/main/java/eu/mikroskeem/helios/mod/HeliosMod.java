@@ -68,9 +68,9 @@ public final class HeliosMod {
 
         logger.info("Setting up libraries");
         /* ** Register Kotlin library */
-        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib:1.1.3-2");
-        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.3-2");
-        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.3-2");
+        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib:1.1.4");
+        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.4");
+        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.4");
         orion.registerLibrary("com.fasterxml.jackson.core:jackson-core:2.8.9");
 
         /* ** Add slf4j-over-log4j */
