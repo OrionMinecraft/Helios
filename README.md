@@ -4,12 +4,16 @@ Plugin API/Tweaks collection on top of an [Orion](https://github.com/OrionMinecr
 [Paper](https://github.com/PaperMC/Paper) Minecraft server software
 
 ## Features
+- Various item tweaks:
+    - Exposed `canPlaceOn` and `canDestroy` NBT tags
+    - Skull textures manipulation
 - Player tweaks:
     - Built-in AFK events
     - Can disable player data saving - extremely useful for most lobby servers
     - Configurable keep-alive packet sending threshold (helps getting ping graph correct faster and/or lower network load (?))
         - Custom implementation is in works
     - Disable idle timeout kicking for opped players (Vanilla does not have that feature built-in for some reason!)
+    - GameProfile wrapping utility
 - World system tweaks:
     - More precise spawnpoint without plugins! Decimals and yaw/pitch are saved to world directly now¹
     - Disable UUID conversion on **every** goddamn server start. Saves start up time if worlds don't need to be converted

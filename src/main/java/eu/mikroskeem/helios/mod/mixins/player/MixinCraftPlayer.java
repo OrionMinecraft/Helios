@@ -27,6 +27,7 @@ package eu.mikroskeem.helios.mod.mixins.player;
 
 import eu.mikroskeem.helios.api.entity.Player;
 import eu.mikroskeem.helios.api.events.player.chat.PlayerPluginSendMessageEvent;
+import eu.mikroskeem.helios.api.profile.Profile;
 import eu.mikroskeem.helios.mod.HeliosMod;
 import eu.mikroskeem.shuriken.common.Ensure;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
@@ -78,5 +79,10 @@ public abstract class MixinCraftPlayer implements Player {
                 .a(Ensure.notNull(jsonMessage, "Message must not be null!"));
         PacketPlayOutChat packet = new PacketPlayOutChat(nmsChatComponent);
         getHandle().playerConnection.sendPacket(packet);
+    }
+
+    @Override
+    public Profile getGameProfile() {
+        return HeliosMod.INSTANCE.getGameProfileWrapper().wrapGameProfile(getHandle().getProfile());
     }
 }

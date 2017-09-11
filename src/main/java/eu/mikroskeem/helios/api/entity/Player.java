@@ -25,6 +25,7 @@
 
 package eu.mikroskeem.helios.api.entity;
 
+import eu.mikroskeem.helios.api.profile.Profile;
 import eu.mikroskeem.helios.mod.configuration.PlayerConfiguration;
 import org.jetbrains.annotations.Contract;
 
@@ -57,4 +58,11 @@ public interface Player extends org.bukkit.entity.Player {
      */
     @Contract("null -> fail")
     void sendJsonMessage(String jsonMessage);
+
+    /**
+     * Returns {@link Profile} associated with given player
+     *
+     * @return {@link Profile} instance
+     */
+    Profile getGameProfile();
 }
