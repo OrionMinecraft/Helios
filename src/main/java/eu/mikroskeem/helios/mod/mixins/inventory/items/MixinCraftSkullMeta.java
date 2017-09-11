@@ -30,6 +30,8 @@ import com.mojang.authlib.properties.Property;
 import eu.mikroskeem.helios.api.inventory.meta.HeliosSkullMeta;
 import eu.mikroskeem.helios.api.profile.Profile;
 import eu.mikroskeem.helios.mod.HeliosMod;
+import eu.mikroskeem.shuriken.common.SneakyThrow;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -90,6 +92,16 @@ public abstract class MixinCraftSkullMeta implements HeliosSkullMeta {
     @Override
     public void setTextures(@Nullable String texture) {
         setTextures(texture, UUID.randomUUID());
+    }
+
+    @Override
+    public SkullMeta clone() {
+        try {
+            return (SkullMeta) super.clone();
+        } catch (CloneNotSupportedException e) {
+            SneakyThrow.throwException(e);
+            return null;
+        }
     }
 
     @Nullable
