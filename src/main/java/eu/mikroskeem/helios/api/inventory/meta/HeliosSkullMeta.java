@@ -26,7 +26,6 @@
 package eu.mikroskeem.helios.api.inventory.meta;
 
 import eu.mikroskeem.helios.api.profile.Profile;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +37,7 @@ import java.util.UUID;
  *
  * @author Mark Vainomaa
  */
-public interface HeliosSkullMeta extends SkullMeta {
+public interface HeliosSkullMeta {
     /**
      * Gets Profile associated with given skull. Might be absent if skull does not have textures associated
      *
