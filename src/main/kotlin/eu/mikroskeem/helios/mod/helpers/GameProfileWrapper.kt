@@ -83,6 +83,8 @@ class HeliosPropertyMap(gameProfile: GameProfile): Multimap<String, Property> {
                 value = newValue
                 return newValue
             }
+
+            override fun toString(): String = "MutableMap.MutableEntry{$key=$value}"
         }
     }
 
@@ -120,6 +122,10 @@ class HeliosPropertyMap(gameProfile: GameProfile): Multimap<String, Property> {
     override fun containsEntry(key: Any?, value: Any?): Boolean = delegate.containsEntry(key, value)
     override fun get(key: String?): MutableCollection<Property> = delegate.get(key).wrap()
     override fun values(): MutableCollection<Property> = delegate.values().wrap()
+
+    override fun equals(other: Any?): Boolean = delegate == other
+    override fun hashCode(): Int = delegate.hashCode()
+    override fun toString(): String = "HeliosPropertyMap{${entries().joinToString(separator = ", ") { (k, v) -> "$k=$v" }}}"
 }
 
 class HeliosWrappedProperty(private val wrappedProperty: com.mojang.authlib.properties.Property): Property {
@@ -133,7 +139,7 @@ class HeliosWrappedProperty(private val wrappedProperty: com.mojang.authlib.prop
     override fun hashCode(): Int = wrappedProperty.hashCode()
     override fun equals(other: Any?): Boolean = wrappedProperty == other
     override fun toString(): String = "WrappedProperty{name=$name, value=$value, signature=$signature, " +
-            "wrappedProperty=$wrappedProperty"
+            "wrappedProperty=$wrappedProperty}"
 }
 
 fun com.mojang.authlib.properties.Property.wrap() = HeliosWrappedProperty(this)
