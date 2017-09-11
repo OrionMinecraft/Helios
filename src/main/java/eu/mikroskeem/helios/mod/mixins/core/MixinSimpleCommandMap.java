@@ -26,6 +26,7 @@
 package eu.mikroskeem.helios.mod.mixins.core;
 
 import eu.mikroskeem.helios.api.events.error.CommandDispatchExceptionEvent;
+import eu.mikroskeem.helios.mod.commands.HeliosCommand;
 import eu.mikroskeem.helios.mod.helpers.CallEventSafe;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -52,7 +53,7 @@ public abstract class MixinSimpleCommandMap {
 
     @Inject(method = "setDefaultCommands()V", at = @At("HEAD"))
     private void onSetDefaultCommands(CallbackInfo callbackInfo) {
-        /* TODO: Commands */
+        register("helios", new HeliosCommand());
     }
 
     @Redirect(method = "dispatch", at = @At(value = "INVOKE", target = helios$COMMAND_EXECUTE))
