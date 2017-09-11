@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "server": [
     "MixinCraftItemStack",
-    "MixinItemStack"
+    "MixinItemStack",
+    "items.MixinCraftSkullMeta"
   ]
 }

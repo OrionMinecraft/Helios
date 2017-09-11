@@ -27,8 +27,10 @@ package eu.mikroskeem.helios.mod;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import eu.mikroskeem.helios.api.profile.GameProfileWrapper;
 import eu.mikroskeem.helios.mod.api.events.BukkitInitializedEvent;
 import eu.mikroskeem.helios.mod.configuration.Configuration;
+import eu.mikroskeem.helios.mod.helpers.HeliosGameProfileWrapper;
 import eu.mikroskeem.helios.mod.plugin.HeliosPluginDescription;
 import eu.mikroskeem.helios.mod.plugin.HeliosPluginLoader;
 import eu.mikroskeem.helios.plugin.HeliosPlugin;
@@ -60,6 +62,13 @@ public final class HeliosMod {
     @Inject private Orion orion;
     @Inject private ConfigurationLoader<CommentedConfigurationNode> configurationLoader;
     private Configuration configuration;
+
+    /* API */
+    private GameProfileWrapper gameProfileWrapper;
+
+    public GameProfileWrapper getGameProfileWrapper() {
+        return gameProfileWrapper;
+    }
 
     @Subscribe
     public void on(ModConstructEvent e) throws Exception {
@@ -101,6 +110,8 @@ public final class HeliosMod {
         configuration = new Configuration(configurationLoader);
         loadConfiguration();
         saveConfiguration();
+
+        gameProfileWrapper = HeliosGameProfileWrapper.INSTANCE;
     }
 
     @Subscribe
