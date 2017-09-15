@@ -1,0 +1,11 @@
+{
+  "required": false,
+  "minVersion": "0.6.15",
+  "package": "eu.mikroskeem.helios.mod.mixins.authlib",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "server": [
+    "MixinGameProfile",
+    "MixinProperty"
+  ]
+}

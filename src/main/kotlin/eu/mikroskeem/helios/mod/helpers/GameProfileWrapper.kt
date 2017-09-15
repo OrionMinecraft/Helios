@@ -47,6 +47,14 @@ object HeliosGameProfileWrapper: GameProfileWrapper {
             HeliosWrappedProperty(com.mojang.authlib.properties.Property(name, value, signature))
 }
 
+object HeliosGameProfileBridge: GameProfileWrapper {
+    override fun newGameProfile(name: String?, uuid: UUID?): Profile = GameProfile(uuid, name) as Profile
+    override fun newGameProfile(uuid: UUID): Profile = GameProfile(uuid, null) as Profile
+    override fun wrapGameProfile(mojangGameProfile: Any): Profile = mojangGameProfile as Profile
+    override fun newProperty(name: String, value: String, signature: String?): Property =
+            com.mojang.authlib.properties.Property(name, value, signature) as Property
+}
+
 class HeliosGameProfile: Profile {
     private val gameProfile: GameProfile
 

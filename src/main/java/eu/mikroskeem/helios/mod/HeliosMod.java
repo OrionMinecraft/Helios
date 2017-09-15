@@ -28,8 +28,11 @@ package eu.mikroskeem.helios.mod;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import eu.mikroskeem.helios.api.profile.GameProfileWrapper;
+import eu.mikroskeem.helios.api.profile.Profile;
+import eu.mikroskeem.helios.api.profile.Property;
 import eu.mikroskeem.helios.mod.api.events.BukkitInitializedEvent;
 import eu.mikroskeem.helios.mod.configuration.Configuration;
+import eu.mikroskeem.helios.mod.helpers.HeliosGameProfileBridge;
 import eu.mikroskeem.helios.mod.helpers.HeliosGameProfileWrapper;
 import eu.mikroskeem.helios.mod.plugin.HeliosPluginDescription;
 import eu.mikroskeem.helios.mod.plugin.HeliosPluginLoader;
@@ -44,6 +47,7 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.spongepowered.asm.util.launchwrapper.LaunchClassLoaderUtil;
 
 import javax.inject.Inject;
 
@@ -93,8 +97,20 @@ public final class HeliosMod {
         logger.info("Setting up ATs...");
         orion.registerAT(HeliosMod.class.getResource("/helios_at.cfg"));
 
+        /* Fix exclusions */
+        try {
+            LaunchClassLoaderUtil lcl = (LaunchClassLoaderUtil) LaunchClassLoaderUtil.class
+                    .getMethod("forClassLoader", Class.forName("net.minecraft.launchwrapper.LaunchClassLoader"))
+                    .invoke(null, this.getClass().getClassLoader());
+
+            logger.info("Removing AuthLib from classloader exclusions");
+            lcl.getClassLoaderExceptions().remove("com.mojang.authlib");
+        }
+        catch (Exception ignored) {}
+
         /* Register Mixins */
         logger.info("Setting up core mixins...");
+        orion.registerMixinConfig("mixins.helios.authlib.json");
         orion.registerMixinConfig("mixins.helios.core.json");
         orion.registerMixinConfig("mixins.helios.event.json");
         orion.registerMixinConfig("mixins.helios.exploit.json");
@@ -110,8 +126,6 @@ public final class HeliosMod {
         configuration = new Configuration(configurationLoader);
         loadConfiguration();
         saveConfiguration();
-
-        gameProfileWrapper = HeliosGameProfileWrapper.INSTANCE;
     }
 
     @Subscribe
@@ -122,6 +136,14 @@ public final class HeliosMod {
                 new HeliosPluginDescription("Helios", "0.0.1", HeliosPlugin.class.getName())
         );
         server.getPluginManager().registerInterface(HeliosPluginLoader.class);
+
+        try {
+            gameProfileWrapper = Profile.class.isAssignableFrom(Class.forName("com.mojang.authlib.GameProfile")) &&
+                    Property.class.isAssignableFrom(Class.forName("com.mojang.authlib.properties.Property")) ?
+                    HeliosGameProfileBridge.INSTANCE : HeliosGameProfileWrapper.INSTANCE;
+        } catch (Exception ex) {
+            gameProfileWrapper = HeliosGameProfileWrapper.INSTANCE;
+        }
     }
 
     public void loadConfiguration() {
