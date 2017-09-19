@@ -54,12 +54,7 @@ public abstract class MixinPlayerConnection {
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
     @Shadow public abstract CraftPlayer getPlayer();
-    @Shadow protected abstract long d();
     @Shadow public EntityPlayer player;
-    @Shadow private int f;
-    @Shadow private int e;
-    @Shadow private long h;
-    @Shadow private long g;
 
     private int helios$awayTicks = 0;
 
@@ -94,52 +89,5 @@ public abstract class MixinPlayerConnection {
                         .callEvent(new PlayerActiveEvent(player, MinecraftServer.aw()));
             }
         }
-    }
-
-    /* Replacement keepalive packet sender: TODO */
-    @Inject(method = "e", at = @At(
-            value = "JUMP",
-            opcode = Opcodes.IFLE,
-            ordinal = 0
-    ))
-    private void onSendKeepAlive(CallbackInfo cb) {
-        long threshold = HeliosMod.INSTANCE.getConfigurationWrapper()
-                .getConfiguration()
-                .getPlayer()
-                .getKeepalivePacketThreshold();
-
-        long networkTickCount = (long) this.e;
-        long lastSentPingPacket = this.h;
-        if(networkTickCount - lastSentPingPacket > threshold) {
-            /* lastSentPingPacket */ this.h = networkTickCount;
-            /* lastPingTime = currentTimeMillis() */ this.g = this.d();
-            /* keepAliveId = lastPingTime */ this.f = (int) this.g;
-            sendPacket(new PacketPlayOutKeepAlive(this.f));
-        }
-    }
-
-    /*
-     * Fuck following if statement:
-     *
-     * if(this.e - this.h > 40L)
-     *
-     * Since (0 - 0) > 40 == false
-     */
-    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = helios$NETWORK_TICK_COUNT, ordinal = 1))
-    private int getNetworkTickCount(PlayerConnection playerConnection) { return 0; }
-    @Redirect(method = "e", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = helios$LAST_SENT_PING_PACKET, ordinal = 0))
-    private long getLastSentPingPacket(PlayerConnection playerConnection) { return 0; }
-    /* End fucking the if statement :) */
-
-    @Inject(method = helios$PROCESS_KEEP_ALIVE, cancellable = true, at = @At("HEAD"))
-    private void onProcessKeepAlive(PacketPlayInKeepAlive keepAlive, CallbackInfo cb) {
-        int keepAliveKey = this.f;
-        int packetKey = keepAlive.a();
-        if(keepAliveKey == packetKey) {
-            int i = (int) (this.d() - this.g);
-            this.player.ping = (this.player.ping * 3 + i) / 4;
-        }
-
-        cb.cancel();
     }
 }
