@@ -46,7 +46,7 @@ class PlayerConfiguration {
         private set
 
     @Setting(value = "keepalive-packet-send-threshold",
-            comment = "How many ticks should server wait before sending new keep-alive packet to client? " +
+            comment = "NOTE: Not working as of 1.12.2! -- How many ticks should server wait before sending new keep-alive packet to client? " +
                     "Note that client times out if server doesn't send keep-alives for 20 seconds.")
     var keepalivePacketThreshold = 40L
         private set

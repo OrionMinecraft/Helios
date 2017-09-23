@@ -10,8 +10,8 @@ Plugin API/Tweaks collection on top of an [Orion](https://github.com/OrionMinecr
 - Player tweaks:
     - Built-in AFK events
     - Can disable player data saving - extremely useful for most lobby servers
-    - Configurable keep-alive packet sending threshold (helps getting ping graph correct faster and/or lower network load (?))
-        - Custom implementation is in works
+    - ~~Configurable keep-alive packet sending threshold (helps getting ping graph correct faster and/or lower network load (?))~~ Might be back some day
+        - ~~Custom implementation is in works~~
     - Disable idle timeout kicking for opped players (Vanilla does not have that feature built-in for some reason!)
     - GameProfile wrapping utility
 - World system tweaks:
@@ -41,7 +41,7 @@ Plugin API/Tweaks collection on top of an [Orion](https://github.com/OrionMinecr
 
 ## Requirements
 - [Orion](https://github.com/OrionMinecraft/Orion)
-- [Paper](https://github.com/PaperMC/Paper) 1.12.1
+- [Paper](https://github.com/PaperMC/Paper) 1.12.2
 - Java 8
 
 ## Installation
