@@ -50,7 +50,7 @@ dependencies {
     compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version: kotlin_version
     compileOnly group: 'com.destroystokyo.paper', name: 'paper-api', version: '1.12.1-R0.1-SNAPSHOT'
     compileOnly group: 'com.destroystokyo.paper', name: 'paper', version: '1.12.2-R0.1-SNAPSHOT'
-    compileOnly group: 'eu.mikroskeem', name: 'orion.api', version: '0.0.1'
+    compileOnly group: 'eu.mikroskeem', name: 'orion.api', version: '0.0.2-SNAPSHOT'
     compileOnly group: 'io.sentry', name: 'sentry', version: '1.5.3'
 }
 

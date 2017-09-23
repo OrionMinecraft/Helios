@@ -25,12 +25,8 @@
 
 package eu.mikroskeem.helios.mod.mixins.core;
 
-import eu.mikroskeem.helios.mod.interfaces.orion.OrionCoreAccessor;
-import eu.mikroskeem.helios.mod.interfaces.orion.OrionModContainer;
 import eu.mikroskeem.orion.api.OrionAPI;
-import eu.mikroskeem.shuriken.instrumentation.methodreflector.MethodReflector;
-import eu.mikroskeem.shuriken.reflect.ClassWrapper;
-import eu.mikroskeem.shuriken.reflect.Reflect;
+import eu.mikroskeem.orion.api.mod.ModInfo;
 import net.minecraft.server.v1_12_R1.CrashReport;
 import net.minecraft.server.v1_12_R1.CrashReportSystemDetails;
 import org.spongepowered.asm.mixin.Final;
@@ -52,15 +48,6 @@ public abstract class MixinCrashReport {
 
     @Inject(method = "h", at = @At("RETURN"))
     private void onPopulateEnvironment(CallbackInfo cb) {
-        /* TODO: Expose given information in Orion */
-        ClassWrapper<?> orionCoreClass = Reflect.getClassThrows("eu.mikroskeem.orion.core.OrionCore");
-        Object orionCoreInstance = orionCoreClass.getField("INSTANCE", orionCoreClass.getWrappedClass())
-                .orElseThrow(() -> new RuntimeException("Could not get Orion Core instance!"))
-                .read();
-        orionCoreClass.setClassInstance(orionCoreInstance);
-        OrionCoreAccessor orionCore = MethodReflector.newInstance(orionCoreClass, OrionCoreAccessor.class)
-                .getReflector();
-
         this.d.a("Orion & Helios - What are those?", () -> new StringBuilder(64)
             .append('\n')
             .append("\t\tOrion is a Paper server coremod framework, written using SpongeMixin library\n")
@@ -79,15 +66,15 @@ public abstract class MixinCrashReport {
 
         this.d.a("Orion coremods", () -> {
             StringBuilder result = new StringBuilder(64);
-            for (OrionModContainer modContainer : orionCore.getMods())
-                result.append("\n\t\t").append(modContainer.getModInfo().getId());
+            for (ModInfo modInfo : OrionAPI.getInstance().getMods())
+                result.append("\n\t\t").append(modInfo.getId());
             return result.toString();
         });
 
         /* TODO: Look into Mixin files and point out potential problem cause */
         this.d.a("Orion registered mixins", () -> {
             StringBuilder result = new StringBuilder(64);
-            for(String mixinConfig: orionCore.getMixinConfigurations()) {
+            for(String mixinConfig: OrionAPI.getInstance().getMixinConfigurations()) {
                 result.append("\n\t\t").append(mixinConfig);
             }
             return result.toString();

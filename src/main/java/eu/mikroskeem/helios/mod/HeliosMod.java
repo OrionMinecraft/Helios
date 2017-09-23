@@ -42,12 +42,12 @@ import eu.mikroskeem.orion.api.annotations.OrionMod;
 import eu.mikroskeem.orion.api.events.ModConstructEvent;
 import eu.mikroskeem.orion.api.events.ModLoadEvent;
 import eu.mikroskeem.shuriken.common.SneakyThrow;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.spongepowered.asm.service.mojang.LaunchClassLoaderUtil;
 
 import javax.inject.Inject;
 
@@ -94,15 +94,8 @@ public final class HeliosMod {
         orion.registerAT(HeliosMod.class.getResource("/helios_at.cfg"));
 
         /* Fix exclusions */
-        try {
-            LaunchClassLoaderUtil lcl = (LaunchClassLoaderUtil) LaunchClassLoaderUtil.class
-                    .getMethod("forClassLoader", Class.forName("net.minecraft.launchwrapper.LaunchClassLoader"))
-                    .invoke(null, this.getClass().getClassLoader());
-
-            logger.info("Removing AuthLib from classloader exclusions");
-            lcl.getClassLoaderExceptions().remove("com.mojang.authlib");
-        }
-        catch (Exception ignored) {}
+        ((LaunchClassLoader) this.getClass().getClassLoader())
+                .getClassLoaderExclusions().remove("com.mojang.authlib");
 
         /* Register Mixins */
         logger.info("Setting up core mixins...");
