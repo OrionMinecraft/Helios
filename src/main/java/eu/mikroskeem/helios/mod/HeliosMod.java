@@ -47,7 +47,7 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.spongepowered.asm.util.launchwrapper.LaunchClassLoaderUtil;
+import org.spongepowered.asm.service.mojang.LaunchClassLoaderUtil;
 
 import javax.inject.Inject;
 
@@ -81,17 +81,13 @@ public final class HeliosMod {
 
         logger.info("Setting up libraries");
         /* ** Register Kotlin library */
-        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib:1.1.4-3");
-        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.4-3");
-        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.4-3");
+        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib:1.1.50");
+        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.50");
+        orion.registerLibrary("org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.50");
         orion.registerLibrary("com.fasterxml.jackson.core:jackson-core:2.8.9");
 
-        /* ** Add slf4j-over-log4j */
-        orion.registerLibrary("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1");
-
         /* ** Sentry */
-        orion.registerLibrary("io.sentry:sentry:1.3.0");
-        orion.registerLibrary("org.slf4j:slf4j-api:1.7.25");
+        orion.registerLibrary("io.sentry:sentry:1.5.3");
 
         /* Register AT */
         logger.info("Setting up ATs...");
