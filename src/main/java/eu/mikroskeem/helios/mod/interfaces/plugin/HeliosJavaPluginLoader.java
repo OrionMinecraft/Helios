@@ -25,10 +25,7 @@
 
 package eu.mikroskeem.helios.mod.interfaces.plugin;
 
-import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.plugin.java.PluginClassLoader;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.List;
 
@@ -38,7 +35,6 @@ import java.util.List;
  *
  * @author Mark Vainomaa
  */
-@Mixin(value = JavaPluginLoader.class, remap = false)
 public interface HeliosJavaPluginLoader {
-    @Accessor List<PluginClassLoader> getLoaders();
+    List<PluginClassLoader> getLoaders();
 }

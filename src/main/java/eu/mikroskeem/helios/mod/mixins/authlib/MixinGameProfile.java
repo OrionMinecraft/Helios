@@ -30,11 +30,14 @@ import com.mojang.authlib.properties.PropertyMap;
 import eu.mikroskeem.helios.api.profile.Profile;
 import eu.mikroskeem.helios.api.profile.Property;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
+import java.util.UUID;
 
 
 /**
@@ -45,11 +48,17 @@ import org.spongepowered.asm.mixin.Shadow;
 @Implements(@Interface(iface = Profile.class, prefix = "heliosProfile$"))
 public abstract class MixinGameProfile {
     @Shadow @Final private PropertyMap properties;
+    @Shadow public abstract UUID getId();
 
     @SuppressWarnings("unchecked")
     @NotNull
     public Multimap<String, Property> heliosProfile$getProperties() {
         return (Multimap<String, Property>) (Object) properties;
+    }
+
+    @Nullable
+    public UUID heliosProfile$getUUID() {
+        return this.getId();
     }
 
     @NotNull

@@ -27,11 +27,23 @@ package eu.mikroskeem.helios.mod.mixins.core;
 
 import eu.mikroskeem.helios.mod.interfaces.plugin.HeliosJavaPluginLoader;
 import org.bukkit.plugin.java.JavaPluginLoader;
+import org.bukkit.plugin.java.PluginClassLoader;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+
+import java.util.List;
 
 
 /**
  * @author Mark Vainomaa
  */
 @Mixin(value = JavaPluginLoader.class, remap = false)
-public abstract class MixinJavaPluginLoader implements HeliosJavaPluginLoader {}
+public abstract class MixinJavaPluginLoader implements HeliosJavaPluginLoader {
+    @Shadow @Final private List<PluginClassLoader> loaders;
+
+    @Override
+    public List<PluginClassLoader> getLoaders() {
+        return loaders;
+    }
+}
