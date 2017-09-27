@@ -51,6 +51,8 @@ public final class HeliosCommand extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if(!testPermission(sender)) return false;
+
         if(args.length > 0) {
             switch (args[0]) {
                 case "reload":
