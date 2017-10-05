@@ -100,10 +100,10 @@ class HeliosPropertyMap(gameProfile: GameProfile): Multimap<String, Property> {
         delegate.entries().map { (k, v) -> newEntry(k, v.wrap()) }.toCollection(ArrayList())
 
     override fun putAll(key: String?, values: MutableIterable<Property>?): Boolean =
-            delegate.putAll(key, values?.unwrap())
+            delegate.putAll(key, values?.unwrap()!!)
 
-    override fun putAll(multimap: Multimap<out String, out Property>?): Boolean {
-        val wrappedMap = multimap?.run {
+    override fun putAll(multimap: Multimap<out String, out Property>): Boolean {
+        val wrappedMap = multimap.run {
             val wrappedMap: Multimap<String, com.mojang.authlib.properties.Property> = HashMultimap.create()
             multimap.asMap().map { (k, v) -> Pair(k, v.unwrap()) }.forEach { (k, v) -> wrappedMap.putAll(k, v) }
             return@run wrappedMap
@@ -115,7 +115,7 @@ class HeliosPropertyMap(gameProfile: GameProfile): Multimap<String, Property> {
         mutableMapOf(*delegate.asMap().map { (k, v) -> Pair(k, v.wrap()) }.toTypedArray())
 
     override fun replaceValues(key: String?, values: MutableIterable<Property>?): MutableCollection<Property> =
-        delegate.replaceValues(key, values?.unwrap()).wrap()
+        delegate.replaceValues(key, values?.unwrap()!!).wrap()
 
     override fun size(): Int = delegate.size()
     override fun removeAll(key: Any?): MutableCollection<Property> = delegate.removeAll(key).wrap()
