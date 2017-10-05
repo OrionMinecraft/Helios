@@ -40,4 +40,16 @@ class ServerConfiguration {
                     "If you don't agree EULA, set this to false")
     var acceptEULA = true
         private set
+
+    @Setting(value = "modify-query-plugins-list",
+            comment = "Whether to modify query protocol plugins list or not (https://dinnerbone.com). Turned on by " +
+                    "default to avoid data leakage")
+    var modifyQueryPluginsList = true
+        private set
+
+    @Setting(value = "query-custom-plugin-information",
+            comment = "Custom query plugins response. Won't be used if `modify-query-plugins-list` is false")
+    var queryCustomPluginInformation = "Helios/Paper on Bukkit: Nice try to peek; " +
+            "all these plugins here,; but you failed miserably.; Have a good day!"
+        private set
 }

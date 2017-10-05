@@ -26,6 +26,7 @@ Plugin API/Tweaks collection on top of an [Orion](https://github.com/OrionMinecr
 - Server core tweaks:
     - Automatic [EULA](https://account.mojang.com/documents/minecraft_eula) agreement. As you should agree to EULA 
     anyway if you are going to run a Minecraft Server
+    - Query protocol plugins list response modification (to disallow exposing installed plugins to prying eyes)
 - Various exploit precautionary tweaks:
     - Strict check for item name length on Creative gamemode
     - Disable using NBT received from Creative gamemode³
