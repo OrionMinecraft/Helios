@@ -18,6 +18,7 @@ Plugin API/Tweaks collection on top of an [Orion](https://github.com/OrionMinecr
     - More precise spawnpoint without plugins! Decimals and yaw/pitch are saved to world directly now¹
     - Disable UUID conversion on **every** goddamn server start. Saves start up time if worlds don't need to be converted
     from older server versions
+    - Override default gamerule values (by default "_announceAdvancements_" is set to **false** by Helios) using config
 - Command system tweaks:
     - Makes default permission denied message configurable (The famous red `I'm sorry, but you do not have permission to
     perform this command...` message)

@@ -23,26 +23,33 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.configuration
+package eu.mikroskeem.helios.mod.mixins.world;
 
-import ninja.leaping.configurate.objectmapping.Setting
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
+import eu.mikroskeem.helios.mod.HeliosMod;
+import net.minecraft.server.v1_12_R1.GameRules;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.Map;
 
 /**
- * World sub-configuration
- *
  * @author Mark Vainomaa
  */
-@ConfigSerializable
-class WorldConfiguration {
-    @Setting(value = "disable-uuid-conversion", comment = "Disables UUID conversion on startup, useful if server " +
-                    "does *certainly* not need to migrate legacy data")
-    var disableUUIDConversion = false
-        private set
+@Mixin(value = GameRules.class, remap = false)
+public abstract class MixinGameRules {
+    @Shadow public abstract void a(String s, String s1, GameRules.EnumGameRuleType enumGameRuleType); // MCP - addGameRule
 
-    @Setting(value = "default-gamerules", comment = "Override default gamemode values")
-    var defaultGamerules = mapOf(
-            Pair("announceAdvancements", "false")
-    )
-        private set
+    private final static String helios$ADD_GAME_RULE = "Lnet/minecraft/server/v1_12_R1/GameRules;" +
+            "a(Ljava/lang/String;Ljava/lang/String;Lnet/minecraft/server/v1_12_R1/GameRules$EnumGameRuleType;)V";
+
+    @Redirect(method = "<init>()V", at = @At(value = "INVOKE", target = helios$ADD_GAME_RULE))
+    private void addGameRule(GameRules $this, String ruleName, String defaultValue, GameRules.EnumGameRuleType type) {
+        $this.a(ruleName, helios$getGamerules().getOrDefault(ruleName, defaultValue), type);
+    }
+
+    private Map<String, String> helios$getGamerules() {
+        return HeliosMod.INSTANCE.getConfigurationWrapper().getConfiguration().getWorld().getDefaultGamerules();
+    }
 }
