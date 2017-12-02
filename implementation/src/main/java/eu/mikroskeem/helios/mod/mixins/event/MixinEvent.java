@@ -28,6 +28,7 @@ package eu.mikroskeem.helios.mod.mixins.event;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.bukkit.event.Event;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 
 /**
@@ -37,6 +38,17 @@ import org.spongepowered.asm.mixin.Mixin;
  */
 @Mixin(value = Event.class, remap = false)
 public abstract class MixinEvent {
+    @Shadow private String name;
+
+    public String getEventName() {
+        if(this.name == null) {
+            String className = this.getClass().getName();
+            this.name = className.substring(className.lastIndexOf('.') + 1);
+        }
+
+        return this.name;
+    }
+
     @Override
     public String toString(){
         return ReflectionToStringBuilder.toString(this);
