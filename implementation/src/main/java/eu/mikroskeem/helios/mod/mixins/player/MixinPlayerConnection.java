@@ -31,7 +31,6 @@ import eu.mikroskeem.helios.api.events.player.idle.PlayerIdleEvent;
 import eu.mikroskeem.helios.mod.HeliosMod;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

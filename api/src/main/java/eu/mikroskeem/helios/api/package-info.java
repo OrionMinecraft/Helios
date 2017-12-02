@@ -23,46 +23,9 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.api.entity;
-
-import eu.mikroskeem.helios.api.profile.Profile;
-import eu.mikroskeem.helios.mod.configuration.PlayerConfiguration;
-import org.jetbrains.annotations.Contract;
-
-
 /**
- * Helios Player
+ * Helios API for plugins
  *
  * @author Mark Vainomaa
  */
-public interface Player extends org.bukkit.entity.Player {
-    /**
-     * Gets the last time when player was active
-     *
-     * @return Seconds from Unix epoch
-     */
-    long getLastActiveTime();
-
-    /**
-     * Shows if player is away or not, value is set by comparing
-     * value in {@link PlayerConfiguration#getMillisecondsUntilToMarkPlayerAway()}
-     *
-     * @return Whether player is away or not
-     */
-    boolean isAway();
-
-    /**
-     * Sends an JSON message to player. Use <pre>net.kyori:text</pre> or similiar library for that
-     *
-     * @param jsonMessage JSON message
-     */
-    @Contract("null -> fail")
-    void sendJsonMessage(String jsonMessage);
-
-    /**
-     * Returns {@link Profile} associated with given player
-     *
-     * @return {@link Profile} instance
-     */
-    Profile getGameProfile();
-}
+package eu.mikroskeem.helios.api;

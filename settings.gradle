@@ -1,0 +1,7 @@
+rootProject.name = "helios"
+
+include 'api'
+include 'implementation'
+
+project(':api').projectDir = "$rootDir/api" as File
+project(':implementation').projectDir = "$rootDir/implementation" as File

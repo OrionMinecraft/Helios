@@ -23,12 +23,46 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.api.events;
+package eu.mikroskeem.helios.api.inventory;
+
+import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+
 
 /**
- * This event gets fired on {@link eu.mikroskeem.helios.mod.HeliosMod#eventBus} when Bukkit's
- * {@link org.bukkit.Server} instance is set
+ * Missing &amp; extra ItemStack methods
  *
  * @author Mark Vainomaa
  */
-public final class BukkitInitializedEvent {}
+public interface HeliosItemStack {
+    /**
+     * Sets list of material what given tool can break
+     *
+     * @param materials List of materials. Use null to clear
+     */
+    void setCanDestroy(@Nullable Collection<Material> materials);
+
+    /**
+     * Gets list of material what given tool can break
+     *
+     * @return List of materials
+     */
+    @NotNull Collection<Material> getCanDestroy();
+
+    /**
+     * Sets list of material where given block can be placed
+     *
+     * @param materials List of materials. Use null to clear
+     */
+    void setCanPlaceOn(@Nullable Collection<Material> materials);
+
+    /**
+     * Gets list of material where given block can be placed
+     *
+     * @return List of materials
+     */
+    @NotNull Collection<Material> getCanPlaceOn();
+}

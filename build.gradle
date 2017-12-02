@@ -7,71 +7,65 @@ buildscript {
     dependencies {
         classpath group: 'org.jetbrains.kotlin', name: 'kotlin-gradle-plugin', version: kotlin_version
         classpath group: 'gradle.plugin.net.minecrell', name: 'licenser', version: minecrell_licenser_version
+        classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: shadow_version
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'kotlin'
-apply plugin: 'net.minecrell.licenser'
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'net.minecrell.licenser'
+    apply plugin: 'com.github.johnrengelman.shadow'
 
-group = pluginGroup
-version = pluginVersion
+    group = pluginGroup
+    version = pluginVersion
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-repositories {
-    mavenLocal()
-    mavenCentral()
+    repositories {
+        mavenLocal()
+        mavenCentral()
 
-    maven {
-        name = 'destroystokyo-repo'
-        url = 'https://repo.destroystokyo.com/repository/maven-public/'
+        maven {
+            name = 'destroystokyo-repo'
+            url = 'https://repo.destroystokyo.com/repository/maven-public/'
+        }
+
+        maven {
+            name = 'sonatype'
+            url = 'https://oss.sonatype.org/content/groups/public/'
+        }
+
+        maven {
+            name = 'mikroskeem-repo'
+            url = 'https://repo.wut.ee/repository/mikroskeem-repo'
+        }
+
+        maven {
+            name = 'spongepowered-repo'
+            url = 'https://repo.spongepowered.org/maven'
+        }
     }
 
-    maven {
-        name = 'sonatype'
-        url = 'https://oss.sonatype.org/content/groups/public/'
+    // Plugin resource processing
+    processResources {
+        from(sourceSets.main.resources.srcDirs) {
+            filter org.apache.tools.ant.filters.ReplaceTokens, tokens: [
+                    version: pluginVersion,
+                    description: description,
+                    website: website
+            ]
+        }
     }
 
-    maven {
-        name = 'mikroskeem-repo'
-        url = 'https://repo.wut.ee/repository/mikroskeem-repo'
+    // Licenser task
+    license {
+        header = rootProject.file('etc/HEADER')
+        ignoreFailures = false
+        include "**/*.java"
+        include "**/*.kt"
     }
-
-    maven {
-        name = 'spongepowered-repo'
-        url = 'https://repo.spongepowered.org/maven'
-    }
-}
-
-// Plugin/mod dependencies
-dependencies {
-    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version
-    compileOnly group: 'com.destroystokyo.paper', name: 'paper-api', version: paper_version
-    compileOnly group: 'com.destroystokyo.paper', name: 'paper', version: paper_version
-    compileOnly group: 'eu.mikroskeem', name: 'orion.api', version: orion_version
-    compileOnly group: 'io.sentry', name: 'sentry', version: sentry_version
-}
-
-
-// Plugin resource processing
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        filter org.apache.tools.ant.filters.ReplaceTokens, tokens: [
-                version: pluginVersion,
-                description: description,
-                website: website
-        ]
-    }
-}
-
-// Licenser task
-license {
-    header = rootProject.file('etc/HEADER')
-    ignoreFailures = false
-    include "**/*.java"
-    include "**/*.kt"
 }
 
 // Wrapper task

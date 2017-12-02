@@ -23,46 +23,45 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.api.inventory;
+package eu.mikroskeem.helios.api.entity;
 
-import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
+import eu.mikroskeem.helios.api.profile.Profile;
+import org.jetbrains.annotations.Contract;
 
 
 /**
- * Missing & extra ItemStack methods
+ * Helios Player
  *
  * @author Mark Vainomaa
  */
-public interface HeliosItemStack {
+public interface Player extends org.bukkit.entity.Player {
     /**
-     * Sets list of material what given tool can break
+     * Gets the last time when player was active
      *
-     * @param materials List of materials. Use null to clear
+     * @return Seconds from Unix epoch
      */
-    void setCanDestroy(@Nullable Collection<Material> materials);
+    long getLastActiveTime();
 
     /**
-     * Gets list of material what given tool can break
+     * Shows if player is away or not, value is set by comparing
+     * value defined in mod's configuration
      *
-     * @return List of materials
+     * @return Whether player is away or not
      */
-    @NotNull Collection<Material> getCanDestroy();
+    boolean isAway();
 
     /**
-     * Sets list of material where given block can be placed
+     * Sends an JSON message to player. Use <pre>net.kyori:text</pre> or similiar library for that
      *
-     * @param materials List of materials. Use null to clear
+     * @param jsonMessage JSON message
      */
-    void setCanPlaceOn(@Nullable Collection<Material> materials);
+    @Contract("null -> fail")
+    void sendJsonMessage(String jsonMessage);
 
     /**
-     * Gets list of material where given block can be placed
+     * Returns {@link Profile} associated with given player
      *
-     * @return List of materials
+     * @return {@link Profile} instance
      */
-    @NotNull Collection<Material> getCanPlaceOn();
+    Profile getGameProfile();
 }

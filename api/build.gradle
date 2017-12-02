@@ -1,0 +1,42 @@
+dependencies {
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '15.0'
+    compileOnly group: 'com.destroystokyo.paper', name: 'paper-api', version: paper_version
+}
+
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'helios.api'
+
+            from project.components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+
+    repositories {
+        mavenLocal()
+
+        maven {
+            name = 'mikroskeem-repo'
+            url = 'https://repo.wut.ee/repository/mikroskeem-repo'
+
+            credentials {
+                username = rootProject.properties.wutRepoUsername
+                password = rootProject.properties.wutRepoPassword
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
