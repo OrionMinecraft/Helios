@@ -27,15 +27,11 @@ package eu.mikroskeem.helios.mod;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import eu.mikroskeem.helios.api.profile.GameProfileWrapper;
-import eu.mikroskeem.helios.api.profile.Profile;
-import eu.mikroskeem.helios.api.profile.Property;
 import eu.mikroskeem.helios.mod.api.events.BukkitInitializedEvent;
 import eu.mikroskeem.helios.mod.configuration.Configuration;
-import eu.mikroskeem.helios.mod.helpers.HeliosGameProfileBridge;
-import eu.mikroskeem.helios.mod.helpers.HeliosGameProfileWrapper;
 import eu.mikroskeem.helios.mod.plugin.HeliosPluginDescription;
 import eu.mikroskeem.helios.mod.plugin.HeliosPluginLoader;
+import eu.mikroskeem.helios.mod.transformers.GameProfileTransformer;
 import eu.mikroskeem.helios.plugin.HeliosPlugin;
 import eu.mikroskeem.orion.api.Orion;
 import eu.mikroskeem.orion.api.annotations.OrionMod;
@@ -66,13 +62,6 @@ public final class HeliosMod {
     @Inject private Orion orion;
     @Inject private ConfigurationLoader<CommentedConfigurationNode> configurationLoader;
     private Configuration configuration;
-
-    /* API */
-    private GameProfileWrapper gameProfileWrapper;
-
-    public GameProfileWrapper getGameProfileWrapper() {
-        return gameProfileWrapper;
-    }
 
     @Subscribe
     public void on(ModConstructEvent e) throws Exception {
@@ -107,6 +96,10 @@ public final class HeliosMod {
         orion.registerMixinConfig("mixins.helios.player.json");
         orion.registerMixinConfig("mixins.helios.packets.json");
         orion.registerMixinConfig("mixins.helios.world.json");
+
+        /* Register transformers */
+        logger.info("Registering transformers...");
+        orion.registerTransformer(GameProfileTransformer.class);
     }
 
     @Subscribe
@@ -125,14 +118,6 @@ public final class HeliosMod {
                 new HeliosPluginDescription("Helios", "0.0.1", HeliosPlugin.class.getName())
         );
         server.getPluginManager().registerInterface(HeliosPluginLoader.class);
-
-        try {
-            gameProfileWrapper = Profile.class.isAssignableFrom(Class.forName("com.mojang.authlib.GameProfile")) &&
-                    Property.class.isAssignableFrom(Class.forName("com.mojang.authlib.properties.Property")) ?
-                    HeliosGameProfileBridge.INSTANCE : HeliosGameProfileWrapper.INSTANCE;
-        } catch (Exception ex) {
-            gameProfileWrapper = HeliosGameProfileWrapper.INSTANCE;
-        }
     }
 
     public void loadConfiguration() {

@@ -23,61 +23,22 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.api.profile;
+package eu.mikroskeem.helios.mod.mixins.authlib.playerprofile;
 
-import com.google.common.collect.Multimap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
-
+import eu.mikroskeem.playerprofile.PlayerProfileProperty;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 /**
- * A Mojang GameProfile wrapper
+ * Mixin to make GameProfile Property compatible with PlayerProfileProperty
  *
  * @author Mark Vainomaa
  */
-public interface Profile {
-    /**
-     * Gets profile name
-     *
-     * @return Profile name
-     */
-    @Nullable
-    String getName();
+@Mixin(value = PlayerProfileProperty.class, priority = 1001, remap = false)
+public abstract class MixinPlayerProfileProperty {
+    @Shadow public abstract String getKey();
 
-    /**
-     * Gets profile UUID
-     *
-     * @return Profile UUID
-     */
-    @Nullable
-    UUID getUUID();
-
-    /**
-     * Gets whether profile is legacy or not
-     *
-     * @return Legacy or not
-     * @deprecated Tell me who uses this and I'll un-deprecate this...
-     */
-    @Deprecated
-    default boolean isLegacy() {
-        return false;
+    public String getName() {
+        return getKey();
     }
-
-    /**
-     * Gets GameProfile's properties
-     *
-     * @return GameProfile properties
-     */
-    @NotNull
-    Multimap<String, Property> getProperties();
-
-    /**
-     * Gets wrapped GameProfile object
-     *
-     * @return GameProfile object
-     */
-    @NotNull
-    Object getWrappedGameProfile();
 }

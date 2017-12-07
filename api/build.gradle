@@ -1,6 +1,7 @@
 dependencies {
     compileOnly group: 'org.jetbrains', name: 'annotations', version: '15.0'
     compileOnly group: 'com.destroystokyo.paper', name: 'paper-api', version: paper_version
+    compile group: 'eu.mikroskeem', name: 'playerprofile', version: playerprofile_version
 }
 
 apply plugin: 'maven-publish'

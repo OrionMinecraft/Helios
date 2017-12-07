@@ -6,6 +6,8 @@
   "compatibilityLevel": "JAVA_8",
   "server": [
     "MixinGameProfile",
-    "MixinProperty"
+    "MixinProperty",
+    "playerprofile.MixinPlayerProfile",
+    "playerprofile.MixinPlayerProfileProperty"
   ]
 }

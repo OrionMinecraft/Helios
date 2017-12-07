@@ -23,61 +23,25 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.api.profile;
+package eu.mikroskeem.helios.mod.helpers
 
-import com.google.common.collect.Multimap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
-
+import com.mojang.authlib.GameProfile
+import com.mojang.authlib.properties.Property
+import eu.mikroskeem.helios.api.profile.Profile
 
 /**
- * A Mojang GameProfile wrapper
- *
  * @author Mark Vainomaa
  */
-public interface Profile {
-    /**
-     * Gets profile name
-     *
-     * @return Profile name
-     */
-    @Nullable
-    String getName();
+object ProfileConversion {
+    @JvmStatic
+    fun convertProfile(profile: Profile): GameProfile {
+        if(profile is GameProfile)
+            return profile
 
-    /**
-     * Gets profile UUID
-     *
-     * @return Profile UUID
-     */
-    @Nullable
-    UUID getUUID();
-
-    /**
-     * Gets whether profile is legacy or not
-     *
-     * @return Legacy or not
-     * @deprecated Tell me who uses this and I'll un-deprecate this...
-     */
-    @Deprecated
-    default boolean isLegacy() {
-        return false;
+        return GameProfile(profile.uuid, profile.name).apply {
+            profile.properties.forEach { key, value ->
+                this.properties.put(key, value as Property)
+            }
+        }
     }
-
-    /**
-     * Gets GameProfile's properties
-     *
-     * @return GameProfile properties
-     */
-    @NotNull
-    Multimap<String, Property> getProperties();
-
-    /**
-     * Gets wrapped GameProfile object
-     *
-     * @return GameProfile object
-     */
-    @NotNull
-    Object getWrappedGameProfile();
 }

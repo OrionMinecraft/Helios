@@ -23,61 +23,39 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.api.profile;
+package eu.mikroskeem.helios.mod.mixins.authlib.playerprofile;
 
 import com.google.common.collect.Multimap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import eu.mikroskeem.helios.api.profile.Property;
+import eu.mikroskeem.playerprofile.PlayerProfile;
+import eu.mikroskeem.playerprofile.PlayerProfileProperty;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.UUID;
 
-
 /**
- * A Mojang GameProfile wrapper
+ * Mixin to make GameProfile compatible with PlayerProfile
  *
  * @author Mark Vainomaa
  */
-public interface Profile {
-    /**
-     * Gets profile name
-     *
-     * @return Profile name
-     */
-    @Nullable
-    String getName();
+@Mixin(value = PlayerProfile.class, priority = 1001, remap = false)
+public abstract class MixinPlayerProfile {
+    @Shadow @Final private Multimap<String, PlayerProfileProperty> properties;
+    @Shadow public abstract String getUsername();
+    @Shadow public abstract UUID getUuid();
 
-    /**
-     * Gets profile UUID
-     *
-     * @return Profile UUID
-     */
-    @Nullable
-    UUID getUUID();
-
-    /**
-     * Gets whether profile is legacy or not
-     *
-     * @return Legacy or not
-     * @deprecated Tell me who uses this and I'll un-deprecate this...
-     */
-    @Deprecated
-    default boolean isLegacy() {
-        return false;
+    public UUID getId() {
+        return getUuid();
     }
 
-    /**
-     * Gets GameProfile's properties
-     *
-     * @return GameProfile properties
-     */
-    @NotNull
-    Multimap<String, Property> getProperties();
+    public String getName() {
+        return getUsername();
+    }
 
-    /**
-     * Gets wrapped GameProfile object
-     *
-     * @return GameProfile object
-     */
-    @NotNull
-    Object getWrappedGameProfile();
+    @SuppressWarnings("unchecked")
+    public Multimap<String, Property> getProperties() {
+        return (Multimap<String, Property>) (Object) properties;
+    }
 }

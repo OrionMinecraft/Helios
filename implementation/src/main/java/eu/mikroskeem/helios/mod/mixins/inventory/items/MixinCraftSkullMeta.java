@@ -29,7 +29,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import eu.mikroskeem.helios.api.inventory.meta.HeliosSkullMeta;
 import eu.mikroskeem.helios.api.profile.Profile;
-import eu.mikroskeem.helios.mod.HeliosMod;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,6 +37,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import static eu.mikroskeem.helios.mod.helpers.ProfileConversion.convertProfile;
 
 
 /**
@@ -50,12 +51,12 @@ public abstract class MixinCraftSkullMeta implements HeliosSkullMeta {
     @Nullable
     @Override
     public Profile getProfile() {
-        return this.profile != null ? HeliosMod.INSTANCE.getGameProfileWrapper().wrapGameProfile(profile) : null;
+        return this.profile != null ? (Profile) profile : null;
     }
 
     @Override
     public void setProfile(@Nullable Profile profile) {
-        this.profile = (GameProfile) (profile != null ? profile.getWrappedGameProfile() : null);
+        this.profile = (profile != null ? convertProfile(profile) : null);
     }
 
     @Nullable

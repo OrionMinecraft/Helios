@@ -83,6 +83,6 @@ public abstract class MixinCraftPlayer implements Player {
 
     @Override
     public Profile getGameProfile() {
-        return HeliosMod.INSTANCE.getGameProfileWrapper().wrapGameProfile(getHandle().getProfile());
+        return (Profile) getHandle().getProfile();
     }
 }
