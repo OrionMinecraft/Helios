@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -56,8 +56,7 @@ public abstract class MixinCraftPlayer implements Player {
 
     @Override
     public boolean isAway() {
-        long configuredAwayTime = HeliosMod.INSTANCE.getConfigurationWrapper()
-                .getConfiguration()
+        long configuredAwayTime = HeliosMod.INSTANCE.getConfiguration()
                 .getPlayer()
                 .getMillisecondsUntilToMarkPlayerAway();
         long currentTime = MinecraftServer.aw();

@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,8 +42,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinDedicatedServer {
     @Inject(method = "aS", cancellable = true, at = @At("HEAD"))
     private void onUUIDMigrate(CallbackInfoReturnable<Boolean> ci) {
-        boolean disable = HeliosMod.INSTANCE.getConfigurationWrapper()
-                .getConfiguration()
+        boolean disable = HeliosMod.INSTANCE.getConfiguration()
                 .getWorld()
                 .getDisableUUIDConversion();
         if(disable)

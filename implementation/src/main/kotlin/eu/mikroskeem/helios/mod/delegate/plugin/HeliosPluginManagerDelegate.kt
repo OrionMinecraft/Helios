@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,28 +41,28 @@ import java.util.*
  */
 object HeliosPluginManagerDelegate {
     @JvmStatic
-    fun unloadPlugin(pluginManager: HeliosPluginManager, plugin: Plugin) {
+    fun HeliosPluginManager.unloadPluginImpl(plugin: Plugin) {
         // Get lowercase version of plugin name
         val pluginName = plugin.name.toLowerCase(Locale.ENGLISH)
 
         // Disable plugin
-        pluginManager.disablePlugin(plugin)
+        disablePlugin(plugin)
 
         // Fire plugin unload event
-        pluginManager.callEvent(PluginUnloadEvent(plugin))
+        callEvent(PluginUnloadEvent(plugin))
 
         // Remove plugin names from lists
-        pluginManager.lookupNames.remove(pluginName, plugin)
-        pluginManager.pluginsList.remove(plugin)
+        lookupNames.remove(pluginName, plugin)
+        pluginsList.remove(plugin)
 
         // Unregister commands
-        ArrayList(pluginManager.commandMap.knownCommands.values)
+        ArrayList(commandMap.knownCommands.values)
                 .filter { it is PluginCommand }.map { it as PluginCommand }
                 .filter { it.plugin.name.toLowerCase() == pluginName }
                 .forEach {
-                    it.unregister(pluginManager.commandMap)
-                    pluginManager.commandMap.knownCommands.remove(it.name, it)
-                    pluginManager.commandMap.knownCommands.remove("$pluginName:${it.name}", it)
+                    it.unregister(commandMap)
+                    commandMap.knownCommands.remove(it.name, it)
+                    commandMap.knownCommands.remove("$pluginName:${it.name}", it)
                 }
 
         // Remove plugin loader

@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -69,8 +69,7 @@ public abstract class MixinWorldNBTStorage {
     }
 
     private boolean helios$isSavingDisabled() {
-        return HeliosMod.INSTANCE.getConfigurationWrapper()
-                .getConfiguration()
+        return HeliosMod.INSTANCE.getConfiguration()
                 .getPlayer()
                 .getPlayerDataSavingDisabled();
     }

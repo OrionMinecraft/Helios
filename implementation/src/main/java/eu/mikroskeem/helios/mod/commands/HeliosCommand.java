@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -56,8 +56,7 @@ public final class HeliosCommand extends Command {
         if(args.length > 0) {
             switch (args[0]) {
                 case "reload":
-                    HeliosMod.INSTANCE.loadConfiguration();
-                    HeliosMod.INSTANCE.saveConfiguration();
+                    HeliosMod.INSTANCE.reloadConfiguration();
                     sender.sendMessage("§aReload done!");
                     return true;
             }

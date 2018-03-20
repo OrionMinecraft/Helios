@@ -2,8 +2,6 @@ dependencies {
     compile(project(":api"))
     compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlin_version
     compileOnly group: 'com.destroystokyo.paper', name: 'paper', version: paper_version
-    compileOnly group: 'io.sentry', name: 'sentry', version: sentry_version
-    compileOnly group: 'eu.mikroskeem', name: 'orion.api', version: orion_version
 }
 
 build.dependsOn shadowJar

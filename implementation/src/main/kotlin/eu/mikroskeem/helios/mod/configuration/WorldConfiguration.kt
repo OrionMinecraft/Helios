@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,7 +42,7 @@ class WorldConfiguration {
 
     @Setting(value = "default-gamerules", comment = "Override default gamemode values")
     var defaultGamerules = mapOf(
-            Pair("announceAdvancements", "false")
+            "announceAdvancements" to "false"
     )
         private set
 }

@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -53,9 +53,7 @@ public interface World extends org.bukkit.World {
      * @param pitch Pitch
      * @return True, if spawn location was successfully set
      */
-    default boolean setSpawnLocation(double x, double y, double z, float yaw, float pitch) {
-        return setSpawnLocation(new Location(null, x, y, z, yaw, pitch));
-    }
+    boolean setSpawnLocation(double x, double y, double z, float yaw, float pitch);
 
     /**
      * Set world spawn location

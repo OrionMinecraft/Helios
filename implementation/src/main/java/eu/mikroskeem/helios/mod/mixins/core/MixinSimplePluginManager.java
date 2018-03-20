@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,7 +28,6 @@ package eu.mikroskeem.helios.mod.mixins.core;
 import eu.mikroskeem.helios.api.events.plugin.PluginLoadEvent;
 import eu.mikroskeem.helios.api.plugin.HeliosPluginManager;
 import eu.mikroskeem.helios.mod.delegate.plugin.HeliosPluginManagerDelegate;
-import eu.mikroskeem.helios.mod.plugin.HeliosPluginLoader;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
@@ -42,7 +41,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -59,15 +57,7 @@ public abstract class MixinSimplePluginManager implements HeliosPluginManager {
 
     @Override
     public void unloadPlugin(@NotNull Plugin plugin){
-        HeliosPluginManagerDelegate.unloadPlugin(this, plugin);
-    }
-
-    @Inject(method = "loadPlugins", at = @At("HEAD"))
-    private void loadHeliosPlugins(File directory, CallbackInfoReturnable<Plugin[]> cir) {
-        HeliosPluginLoader.INSTANCE.getLoadedPlugins().forEach((pluginName, plugin) -> {
-            getLookupNames().put(pluginName.toLowerCase(Locale.ENGLISH), plugin);
-            getPluginsList().add(plugin);
-        });
+        HeliosPluginManagerDelegate.unloadPluginImpl(this, plugin);
     }
 
     @Inject(method = "loadPlugins", at = @At("RETURN"))

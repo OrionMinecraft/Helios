@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,6 +29,17 @@ package eu.mikroskeem.helios.mod.interfaces.itemstack;
  * @author Mark Vainomaa
  */
 public interface HeliosItemStack {
+    /**
+     * Returns whether {@link org.bukkit.inventory.ItemStack} is stripped from NBT tags or not
+     *
+     * @return Whether ItemStack is stripped from NBT tags or not
+     */
     boolean isStripped();
+
+    /**
+     * Marks {@link org.bukkit.inventory.ItemStack} stripped from NBT
+     *
+     * @param value Whether ItemStack is stripped or not
+     */
     void setStrippedFlag(boolean value);
 }

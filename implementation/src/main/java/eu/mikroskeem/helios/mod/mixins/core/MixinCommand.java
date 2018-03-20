@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -49,21 +49,18 @@ public abstract class MixinCommand {
             return true;
 
         /* Send permission message */
-        boolean shouldOverride = HeliosMod.INSTANCE.getConfigurationWrapper()
-                .getConfiguration()
+        boolean shouldOverride = HeliosMod.INSTANCE.getConfiguration()
                 .getCommand()
                 .getOverridePluginCommandPermissionDeniedMessage();
 
-        String overrideMessage = HeliosMod.INSTANCE.getConfigurationWrapper()
-                .getConfiguration()
+        String overrideMessage = HeliosMod.INSTANCE.getConfiguration()
                 .getCommand()
                 .getPermissionDeniedMessage();
 
         /* Pick correct message and send it to target */
         String[] messages = (shouldOverride ? overrideMessage : (permissionMessage != null ? permissionMessage : overrideMessage))
-                .replace("<permission>", permission) // Retain legacy placeholder
-                .replace("%permission%", permission)
-                .replace("%command%", name)
+                .replace("<permission>", permission).replace("%permission%", permission)
+                .replace("<command>", name).replace("%command%", name)
                 .split("\n");
 
         target.sendMessage(messages);

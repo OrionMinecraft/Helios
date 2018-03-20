@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,6 +32,17 @@ import net.minecraft.server.v1_12_R1.ItemStack;
  * @author Mark Vainomaa
  */
 public interface PacketPlayInSetCreativeSlotAccessor {
+    /**
+     * Gets {@link ItemStack} in packet
+     *
+     * @return ItemStack in packet
+     */
     ItemStack getItemStack();
+
+    /**
+     * Sets {@link ItemStack} in packet
+     *
+     * @param itemStack ItemStack in packet
+     */
     void setItemStack(ItemStack itemStack);
 }

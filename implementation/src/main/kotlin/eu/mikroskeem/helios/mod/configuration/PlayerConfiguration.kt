@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -43,12 +43,6 @@ class PlayerConfiguration {
     @Setting(value = "player-data-saving-disabled",
             comment = "Disables player data saving to disk. Useful for Lobby servers")
     var playerDataSavingDisabled = false
-        private set
-
-    @Setting(value = "keepalive-packet-send-threshold",
-            comment = "NOTE: Not working as of 1.12.2! -- How many ticks should server wait before sending new keep-alive packet to client? " +
-                    "Note that client times out if server doesn't send keep-alives for 20 seconds.")
-    var keepalivePacketThreshold = 40L
         private set
 
     @Setting(value = "dont-kick-opped-players-on-idle-timeout",

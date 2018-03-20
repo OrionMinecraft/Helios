@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +29,9 @@ import eu.mikroskeem.helios.api.entity.Player;
 import eu.mikroskeem.helios.api.events.player.idle.PlayerActiveEvent;
 import eu.mikroskeem.helios.api.events.player.idle.PlayerIdleEvent;
 import eu.mikroskeem.helios.mod.HeliosMod;
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.MinecraftServer;
+import net.minecraft.server.v1_12_R1.PlayerConnection;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,21 +48,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(value = PlayerConnection.class, remap = false)
 public abstract class MixinPlayerConnection {
-    private final static String helios$NETWORK_TICK_COUNT = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;e:I";
-    private final static String helios$LAST_SENT_PING_PACKET = "Lnet/minecraft/server/v1_12_R1/PlayerConnection;h:J";
-    private final static String helios$PROCESS_KEEP_ALIVE = "a(Lnet/minecraft/server/v1_12_R1/PacketPlayInKeepAlive;)V";
     private final static String helios$GET_LAST_ACTIVE_TIME = "Lnet/minecraft/server/v1_12_R1/EntityPlayer;J()J";
+    private final static String helios$UPDATE = "e";
 
-    @Shadow public abstract void sendPacket(Packet<?> packet);
     @Shadow public abstract CraftPlayer getPlayer();
     @Shadow public EntityPlayer player;
 
     private int helios$awayTicks = 0;
 
-    @Redirect(method = "e", at = @At(value = "INVOKE", target = helios$GET_LAST_ACTIVE_TIME, ordinal = 0))
+    @Redirect(method = helios$UPDATE, at = @At(value = "INVOKE", target = helios$GET_LAST_ACTIVE_TIME, ordinal = 0))
     private long getLastActiveTime(EntityPlayer entityPlayer) {
-        boolean dontKick = HeliosMod.INSTANCE.getConfigurationWrapper()
-                .getConfiguration()
+        boolean dontKick = HeliosMod.INSTANCE.getConfiguration()
                 .getPlayer()
                 .getDontKickOppedPlayersOnIdle();
 
@@ -72,7 +70,7 @@ public abstract class MixinPlayerConnection {
             return entityPlayer.J();
     }
 
-    @Inject(method = "e", at = @At("TAIL"))
+    @Inject(method = helios$UPDATE, at = @At("TAIL"))
     private void onUpdate(CallbackInfo cb) {
         Player player = (Player) getPlayer();
         if(player.isAway()) {

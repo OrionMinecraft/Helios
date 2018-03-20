@@ -1,7 +1,7 @@
 /*
  * This file is part of project Helios, licensed under the MIT License (MIT).
  *
- * Copyright (c) 2017 Mark Vainomaa <mikroskeem@mikroskeem.eu>
+ * Copyright (c) 2017-2018 Mark Vainomaa <mikroskeem@mikroskeem.eu>
  * Copyright (c) Contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -46,20 +46,23 @@ public abstract class MixinCraftWorld implements World {
 
     @Override
     public Location getSpawnLocation() {
-        HeliosWorldData worldData = (HeliosWorldData) this.world.worldData;
-        return worldData.getSpawnpoint();
+        return ((HeliosWorldData) this.world.worldData).getSpawnpoint();
     }
 
     @Override
     public boolean setSpawnLocation(Location location) {
-        HeliosWorldData worldData = (HeliosWorldData) this.world.worldData;
-        worldData.setSpawnpoint(location);
+        ((HeliosWorldData) this.world.worldData).setSpawnpoint(location);
         return true;
     }
 
     @Override
     public boolean setSpawnLocation(int x, int y, int z) {
         return setSpawnLocation(new Location(null, x, y, z, 0, 0));
+    }
+
+    @Override
+    public boolean setSpawnLocation(double x, double y, double z, float yaw, float pitch) {
+        return setSpawnLocation(new Location(null, x, y, z, yaw, pitch));
     }
 
     @Override
