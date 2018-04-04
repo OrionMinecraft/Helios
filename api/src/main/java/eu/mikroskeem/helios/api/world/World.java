@@ -26,6 +26,7 @@
 package eu.mikroskeem.helios.api.world;
 
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -62,5 +63,5 @@ public interface World extends org.bukkit.World {
      * @return True, if spawn location was successfully set
      * @see org.bukkit.World
      */
-    boolean setSpawnLocation(Location location);
+    boolean setSpawnLocation(@NotNull Location location);
 }

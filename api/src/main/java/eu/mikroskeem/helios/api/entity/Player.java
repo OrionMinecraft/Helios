@@ -25,7 +25,7 @@
 
 package eu.mikroskeem.helios.api.entity;
 
-import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -54,6 +54,5 @@ public interface Player extends org.bukkit.entity.Player {
      *
      * @param jsonMessage JSON message
      */
-    @Contract("null -> fail")
-    void sendJsonMessage(String jsonMessage);
+    void sendJsonMessage(@NotNull String jsonMessage);
 }

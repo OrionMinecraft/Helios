@@ -28,6 +28,7 @@ package eu.mikroskeem.helios.api.events.player.idle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -46,7 +47,7 @@ public final class PlayerActiveEvent extends PlayerEvent {
      * @param player Player who was marked active
      * @param timestamp Timestamp when player was marked active
      */
-    public PlayerActiveEvent(Player player, long timestamp) {
+    public PlayerActiveEvent(@NotNull Player player, long timestamp) {
         super(player);
         this.timestamp = timestamp;
     }

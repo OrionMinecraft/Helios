@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This event gets fired when ${@link Player#sendMessage(String)} and friends is invoked
@@ -47,7 +48,7 @@ public final class PlayerPluginSendMessageEvent extends PlayerEvent implements C
      * @param player Player who'll receive the message
      * @param message Message
      */
-    public PlayerPluginSendMessageEvent(Player player, String message) {
+    public PlayerPluginSendMessageEvent(@NotNull Player player, @NotNull String message) {
         super(player);
         this.message = message;
     }
@@ -57,6 +58,7 @@ public final class PlayerPluginSendMessageEvent extends PlayerEvent implements C
      *
      * @return Message
      */
+    @NotNull
     public String getMessage() {
         return message;
     }
@@ -66,7 +68,7 @@ public final class PlayerPluginSendMessageEvent extends PlayerEvent implements C
      *
      * @param message Message
      */
-    public void setMessage(String message) {
+    public void setMessage(@NotNull String message) {
         this.message = message;
     }
 

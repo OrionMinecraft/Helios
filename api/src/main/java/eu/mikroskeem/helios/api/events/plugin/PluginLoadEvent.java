@@ -42,7 +42,7 @@ public final class PluginLoadEvent extends Event {
 
     private final Plugin plugin;
 
-    public PluginLoadEvent(Plugin plugin) {
+    public PluginLoadEvent(@NotNull Plugin plugin) {
         super();
         this.plugin = plugin;
     }
