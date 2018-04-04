@@ -33,12 +33,17 @@ import net.minecraft.server.v1_12_R1.EntityPlayer;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.MinecraftServer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_12_R1.TileEntitySign;
+import org.apache.commons.lang.Validate;
+import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.block.CraftSign;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 
@@ -81,5 +86,17 @@ public abstract class MixinCraftPlayer implements Player {
                 .a(Ensure.notNull(jsonMessage, "Message must not be null!"));
         PacketPlayOutChat packet = new PacketPlayOutChat(nmsChatComponent);
         getHandle().playerConnection.sendPacket(packet);
+    }
+
+    @Override
+    @Intrinsic // If https://github.com/PaperMC/Paper/pull/1070 gets finally merged
+    public void openSign(Sign sign) {
+        Validate.isTrue(sign.getWorld().equals(this.getWorld()), "Sign must be in the same world as player is in");
+        CraftSign craftSign = (CraftSign) sign;
+        TileEntitySign teSign = craftSign.getTileEntity();
+        // Make sign editable temporarily, will be set back to false in PlayerConnection later
+        teSign.isEditable = true;
+
+        getHandle().openSign(teSign);
     }
 }

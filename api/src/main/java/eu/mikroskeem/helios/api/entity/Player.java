@@ -25,6 +25,7 @@
 
 package eu.mikroskeem.helios.api.entity;
 
+import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -55,4 +56,11 @@ public interface Player extends org.bukkit.entity.Player {
      * @param jsonMessage JSON message
      */
     void sendJsonMessage(@NotNull String jsonMessage);
+
+    /**
+     * Opens editor for placed sign
+     *
+     * @param sign Sign to open
+     */
+    void openSign(@NotNull Sign sign);
 }
