@@ -27,7 +27,6 @@ package eu.mikroskeem.helios.mod.mixins.core;
 
 import eu.mikroskeem.helios.api.events.plugin.PluginLoadEvent;
 import eu.mikroskeem.helios.api.plugin.HeliosPluginManager;
-import eu.mikroskeem.helios.mod.delegate.plugin.HeliosPluginManagerDelegate;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
@@ -54,11 +53,6 @@ public abstract class MixinSimplePluginManager implements HeliosPluginManager {
     @NotNull @Override @Accessor public abstract Map<String, Plugin> getLookupNames();
     @NotNull @Override @Accessor("plugins") public abstract List<Plugin> getPluginsList();
     @NotNull @Override @Accessor public abstract SimpleCommandMap getCommandMap();
-
-    @Override
-    public void unloadPlugin(@NotNull Plugin plugin){
-        HeliosPluginManagerDelegate.unloadPluginImpl(this, plugin);
-    }
 
     @Inject(method = "loadPlugins", at = @At("RETURN"))
     private void onLoadPlugins(File directory, CallbackInfoReturnable<Plugin[]> cir) {

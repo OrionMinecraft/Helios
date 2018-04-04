@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.Shadow;
  *
  * @author Mark Vainomaa
  */
-@Mixin(value = Command.class, remap = false)
+@Mixin(value = Command.class, remap = false, priority = 999)
 public abstract class MixinCommand {
     @Shadow private String permissionMessage;
     @Shadow private String permission;

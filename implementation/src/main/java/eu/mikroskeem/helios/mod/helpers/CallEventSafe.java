@@ -23,32 +23,22 @@
  * THE SOFTWARE.
  */
 
-package eu.mikroskeem.helios.mod.delegate.exploit
+package eu.mikroskeem.helios.mod.helpers;
 
-
-import eu.mikroskeem.helios.mod.HeliosMod
-import eu.mikroskeem.helios.mod.configuration.ExploitConfiguration
-import org.apache.logging.log4j.LogManager
-import org.bukkit.entity.Player
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.event.Event;
 
 /**
  * @author Mark Vainomaa
  */
-object ExploitCheck {
-    // https://minecraft.gamepedia.com/Language
-    private val VALID_LOCALE_REGEX = Regex("[a-zA-Z\\-]+(_[a-zA-Z\\-]+)?")
-
-    private val log = LogManager.getLogger("ExploitCheck")
-    private val config: ExploitConfiguration get() = HeliosMod.INSTANCE.configuration.exploit
-
-    @JvmStatic
-    fun checkLocale(player: Player, locale: String): String {
-        return if(config.checkInvalidLocale && (locale.length > 16 || !locale.matches(VALID_LOCALE_REGEX))) {
-            config.localeToUseOnInvalid.also {
-                log.warn("Player ${player.name} tried to use invalid locale: $locale! Forcing to use '$it'")
-            }
-        } else {
-            locale
+public final class CallEventSafe {
+    public static <T extends Event> T callEvent(T event) {
+        Server server = Bukkit.getServer();
+        if(server != null) {
+            server.getPluginManager().callEvent(event);
+            return event;
         }
+        return null;
     }
 }

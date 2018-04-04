@@ -44,7 +44,7 @@ private const val CAN_PLACE_ON = "CanPlaceOn"
 
 object HeliosItemStackDelegate {
     @JvmStatic
-    fun ItemStack.setCanDestroy( materials: Collection<Material>?) = setMaterialsTag(CAN_DESTROY, materials)
+    fun ItemStack.setCanDestroy(materials: Collection<Material>?) = setMaterialsTag(CAN_DESTROY, materials)
 
     @JvmStatic
     fun ItemStack.setCanPlaceOn(materials: Collection<Material>?) = setMaterialsTag(CAN_PLACE_ON, materials)

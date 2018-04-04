@@ -64,10 +64,10 @@ public interface HeliosPluginManager extends PluginManager {
     @NotNull
     SimpleCommandMap getCommandMap();
 
-    /**
+    /* *
      * Unloads {@link Plugin}
      *
      * @param plugin Plugin to unload
-     */
-    void unloadPlugin(@NotNull Plugin plugin);
+     * /
+    void unloadPlugin(@NotNull Plugin plugin);*/
 }
